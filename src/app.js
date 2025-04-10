@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
 import livereload from 'livereload';
 import connectLivereload from 'connect-livereload';
+import expressLayouts from 'express-ejs-layouts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,6 +25,9 @@ app.use(connectLivereload());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(expressLayouts);
+app.set('layout', 'layouts/main');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
