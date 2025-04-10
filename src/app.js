@@ -1,22 +1,26 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.use(session({
-  secret: 'secret-key',
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // Dummy users
 const users = [
   { id: 1, username: 'admin', password: 'admin123', role: 'admin' },
-  { id: 2, username: 'john', password: 'john123', role: 'customer' }
+  { id: 2, username: 'john', password: 'john123', role: 'customer' },
 ];
 
 // Middleware
@@ -47,7 +51,7 @@ app.post('/register', (req, res) => {
     return res.send('All fields are required.');
   }
 
-  const existingUser = users.find(u => u.username === username);
+  const existingUser = users.find((u) => u.username === username);
   if (existingUser) {
     return res.send('Username already exists.');
   }
@@ -56,7 +60,7 @@ app.post('/register', (req, res) => {
     id: users.length + 1,
     username,
     password,
-    role
+    role,
   };
 
   users.push(newUser);
@@ -71,7 +75,9 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  const user = users.find(u => u.username === username && u.password === password);
+  const user = users.find(
+    (u) => u.username === username && u.password === password
+  );
   if (user) {
     req.session.user = user;
     return res.redirect(user.role === 'admin' ? '/dashboard' : '/customer');
@@ -92,9 +98,12 @@ app.get('/dashboard', isAuthenticated, isAdmin, (req, res) => {
 
 // Customer portal (protected route)
 app.get('/customer', isAuthenticated, (req, res) => {
-  if (req.session.user.role !== 'customer') return res.status(403).send('Access Denied');
+  if (req.session.user.role !== 'customer')
+    return res.status(403).send('Access Denied');
   res.render('customer', { user: req.session.user });
 });
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running at http://localhost:${PORT}`)
+);
