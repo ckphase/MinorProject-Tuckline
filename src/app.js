@@ -3,15 +3,19 @@ import path, { dirname } from 'path';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 
-app.set('view engine', 'ejs');
+// view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
   session({
