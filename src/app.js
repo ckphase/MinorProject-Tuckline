@@ -3,11 +3,23 @@ import path, { dirname } from 'path';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
+import livereload from 'livereload';
+import connectLivereload from 'connect-livereload';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 const app = express();
+
+const liveReloadServer = livereload.createServer();
+liveReloadServer.watch(path.join(__dirname, 'views'));
+
+liveReloadServer.server.once('connection', () => {
+  setTimeout(() => {
+    liveReloadServer.refresh('/');
+  }, 100);
+});
+
+app.use(connectLivereload());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
