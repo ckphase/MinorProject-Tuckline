@@ -1,7 +1,11 @@
-const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const path = require('path');
+import express from 'express';
+import path, { dirname } from 'path';
+import session from 'express-session';
+import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 
 app.set('view engine', 'ejs');
