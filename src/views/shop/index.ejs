@@ -1,1 +1,40 @@
-<p>Welcome to the home page</p>
+<link
+  rel="stylesheet"
+  href="/styles/shop.css"
+/>
+<main class="container">
+  <section class="search-section">
+    <div class="search-container">
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search products or tuck shops..."
+        />
+        <button class="search-button">🔍</button>
+      </div>
+      <div class="filter-container">
+        <select
+          id="categoryFilter"
+          class="filter-select"
+        >
+        <option value="all">All Categories</option>
+            <% if (categories) { %>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.name %>"><%= category.name %></option>
+                <% }) %>
+            <% } %>
+        </select>
+        <select
+          id="sortFilter"
+          class="filter-select"
+        >
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Rating</option>
+        </select>
+      </div>
+    </div>
+  </section>
+</main>
