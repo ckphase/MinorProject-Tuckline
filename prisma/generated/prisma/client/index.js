@@ -227,7 +227,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/isxwor/Documents/class/tuckline/prisma/generated/prisma",
+      "value": "/home/isxwor/Documents/class/tuckline/prisma/generated/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -245,26 +245,27 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": "../../../../.env",
+    "schemaEnvPath": "../../../../.env"
   },
-  "relativePath": "../..",
+  "relativePath": "../../..",
   "clientVersion": "6.6.0",
   "engineVersion": "f676762280b54cd07c770017ed3711ddde35f37a",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root:tuckline-admin@13.216.24.239:3306/tuckline"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String   @unique\n  password  String\n  role      Role\n  createdAt DateTime @default(now())\n\n  orders Order[]\n  Shop   Shop?\n}\n\nmodel Shop {\n  id          Int      @id @default(autoincrement())\n  name        String\n  description String?\n  ownerId     Int      @unique\n  location    String\n  createdAt   DateTime @default(now())\n\n  owner  User                  @relation(fields: [ownerId], references: [id])\n  prices ProductVariantPrice[]\n  orders Order[]\n}\n\nmodel Category {\n  id        Int      @id @default(autoincrement())\n  name      String   @unique\n  createdAt DateTime @default(now())\n\n  products Product[]\n}\n\nmodel Product {\n  id          Int      @id @default(autoincrement())\n  name        String\n  description String?\n  categoryId  Int\n  createdAt   DateTime @default(now())\n\n  category Category         @relation(fields: [categoryId], references: [id])\n  variants ProductVariant[]\n}\n\nmodel ProductVariant {\n  id        Int      @id @default(autoincrement())\n  productId Int\n  name      String\n  createdAt DateTime @default(now())\n  image     String?\n\n  product   Product               @relation(fields: [productId], references: [id])\n  prices    ProductVariantPrice[]\n  OrderLine OrderLine[]\n}\n\nmodel ProductVariantPrice {\n  id               Int     @id @default(autoincrement())\n  shopId           Int\n  productVariantId Int\n  price            Decimal @db.Decimal(10, 2)\n\n  shop           Shop           @relation(fields: [shopId], references: [id])\n  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])\n\n  @@unique([shopId, productVariantId])\n}\n\nmodel Order {\n  id          Int         @id @default(autoincrement())\n  customerId  Int\n  shopId      Int\n  totalAmount Decimal     @db.Decimal(10, 2)\n  status      OrderStatus @default(pending)\n  createdAt   DateTime    @default(now())\n\n  customer User        @relation(fields: [customerId], references: [id])\n  shop     Shop        @relation(fields: [shopId], references: [id])\n  lines    OrderLine[]\n}\n\nmodel OrderLine {\n  id               Int     @id @default(autoincrement())\n  orderId          Int\n  name             String\n  productVariantId Int\n  quantity         Int\n  lineTotal        Decimal @db.Decimal(10, 2)\n\n  order          Order          @relation(fields: [orderId], references: [id])\n  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])\n}\n\nenum Role {\n  admin\n  customer\n}\n\nenum OrderStatus {\n  pending\n  confirmed\n  delivered\n  cancelled\n}\n",
-  "inlineSchemaHash": "01d8a8244bcf16e1882911285923a443b59b3eba78dfbda4977346c08d907926",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String   @unique\n  password  String\n  role      Role\n  createdAt DateTime @default(now())\n\n  orders Order[]\n  Shop   Shop?\n}\n\nmodel Shop {\n  id          Int      @id @default(autoincrement())\n  name        String\n  description String?\n  ownerId     Int      @unique\n  location    String\n  createdAt   DateTime @default(now())\n\n  owner  User                  @relation(fields: [ownerId], references: [id])\n  prices ProductVariantPrice[]\n  orders Order[]\n}\n\nmodel Category {\n  id        Int      @id @default(autoincrement())\n  name      String   @unique\n  createdAt DateTime @default(now())\n\n  products Product[]\n}\n\nmodel Product {\n  id          Int      @id @default(autoincrement())\n  name        String\n  description String?\n  categoryId  Int\n  createdAt   DateTime @default(now())\n\n  category Category         @relation(fields: [categoryId], references: [id])\n  variants ProductVariant[]\n}\n\nmodel ProductVariant {\n  id        Int      @id @default(autoincrement())\n  productId Int\n  name      String\n  createdAt DateTime @default(now())\n  image     String?\n\n  product   Product               @relation(fields: [productId], references: [id])\n  prices    ProductVariantPrice[]\n  OrderLine OrderLine[]\n}\n\nmodel ProductVariantPrice {\n  id               Int     @id @default(autoincrement())\n  shopId           Int\n  productVariantId Int\n  price            Decimal @db.Decimal(10, 2)\n\n  shop           Shop           @relation(fields: [shopId], references: [id])\n  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])\n\n  @@unique([shopId, productVariantId])\n}\n\nmodel Order {\n  id          Int         @id @default(autoincrement())\n  customerId  Int\n  shopId      Int\n  totalAmount Decimal     @db.Decimal(10, 2)\n  status      OrderStatus @default(pending)\n  createdAt   DateTime    @default(now())\n\n  customer User        @relation(fields: [customerId], references: [id])\n  shop     Shop        @relation(fields: [shopId], references: [id])\n  lines    OrderLine[]\n}\n\nmodel OrderLine {\n  id               Int     @id @default(autoincrement())\n  orderId          Int\n  name             String\n  productVariantId Int\n  quantity         Int\n  lineTotal        Decimal @db.Decimal(10, 2)\n\n  order          Order          @relation(fields: [orderId], references: [id])\n  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])\n}\n\nenum Role {\n  admin\n  customer\n}\n\nenum OrderStatus {\n  pending\n  confirmed\n  delivered\n  cancelled\n}\n",
+  "inlineSchemaHash": "2dd5a4517bb5e647140658a22633053b979a42d9989bb8462a92949e4b0b4f89",
   "copyEngine": true
 }
 
@@ -273,8 +274,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "prisma/generated/prisma",
-    "generated/prisma",
+    "prisma/generated/prisma/client",
+    "generated/prisma/client",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -304,7 +305,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
-path.join(process.cwd(), "prisma/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
+path.join(process.cwd(), "prisma/generated/prisma/client/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "prisma/generated/prisma/schema.prisma")
+path.join(process.cwd(), "prisma/generated/prisma/client/schema.prisma")

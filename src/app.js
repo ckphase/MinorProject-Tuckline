@@ -10,6 +10,7 @@ import expressLayouts from 'express-ejs-layouts';
 import adminRoutes from './routes/admin.js';
 import shopRoutes from './routes/shop.js';
 import authRoutes from './routes/auth.js';
+import { prisma } from './config/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -47,6 +48,16 @@ app.use(
 app.use('/admin', adminRoutes);
 app.use('/shop', shopRoutes);
 app.use('/auth', authRoutes);
+
+app.use('/api/users', async (req, res) => {
+  const ok = await prisma.user.findMany();
+  console.log(ok);
+
+  res.json([
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Doe' },
+  ]);
+});
 
 const PORT = 3000;
 app.listen(PORT, () =>
