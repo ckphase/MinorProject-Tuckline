@@ -1,54 +1,65 @@
 import express from 'express';
+import bcrypt from 'bcrypt';
+
+import { prisma } from '../config/db.js';
 
 const router = express.Router();
-
-const users = [
-  { id: 1, username: 'admin', password: 'admin123', role: 'admin' },
-  { id: 2, username: 'john', password: 'john123', role: 'customer' },
-];
 
 // GET
 router.get('/login', (req, res) => res.render('auth/login'));
 
-router.get('/register/:role', (req, res) => {
-  const role = req.params.role;
-  if (!['admin', 'customer'].includes(role)) {
-    return res.status(404).send('Not found');
-  }
-
-  res.render('auth/register', { role });
+router.get('/register', (req, res) => {
+  res.render('auth/register');
 });
 
 // POST
-router.post('/register', (req, res) => {
-  const { username, password, role } = req.body;
-  if (!username || !password || !role) {
+router.post('/register', async (req, res) => {
+  const { email, password, role, name } = req.body;
+  if (!email || !password || !role || !name) {
     return res.send('All fields are required.');
   }
 
-  const exists = users.find((u) => u.username === username);
-  if (exists) {
-    return res.send('Username exists.');
+  const existingUser = await prisma.user.findFirst({
+    where: { email },
+  });
+  if (existingUser) {
+    return res.send('User with that email already exists.');
   }
 
-  const newUser = { id: users.length + 1, username, password, role };
-  users.push(newUser);
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = await prisma.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    },
+  });
+
   req.session.user = newUser;
-  res.redirect(role === 'admin' ? '/admin/dashboard' : '/shop/portal');
+  res.redirect(role === 'admin' ? '/admin/dashboard' : '/shop');
 });
 
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.send('All fields are required.');
+  }
 
-  const user = users.find(
-    (u) => u.username === username && u.password === password
-  );
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
   if (!user) {
     return res.send('Invalid credentials');
   }
 
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return res.send('Invalid credentials');
+  }
+
   req.session.user = user;
-  res.redirect(user.role === 'admin' ? '/admin/dashboard' : '/shop/portal');
+  res.redirect(user.role === 'admin' ? '/admin/dashboard' : '/shop');
 });
 
 router.get('/logout', (req, res) => {

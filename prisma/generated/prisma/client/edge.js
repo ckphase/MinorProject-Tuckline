@@ -254,11 +254,12 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root:tuckline-admin@13.216.24.239:3306/tuckline"
+        "value": null
       }
     }
   },

@@ -1,12 +1,16 @@
-x
 <h2>Register</h2>
 <form
   method="POST"
-  action="/register"
+  action="/auth/register"
 >
   <input
-    name="username"
-    placeholder="Username"
+    name="name"
+    placeholder="Full Name"
+    required
+  /><br />
+  <input
+    name="email"
+    placeholder="Email"
     required
   /><br />
   <input
