@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+
+  orders Order[]
+  Shop   Shop?
+}
+
+model Shop {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  ownerId     Int      @unique
+  location    String
+  createdAt   DateTime @default(now())
+
+  owner  User                  @relation(fields: [ownerId], references: [id])
+  prices ProductVariantPrice[]
+  orders Order[]
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  products Product[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  categoryId  Int
+  createdAt   DateTime @default(now())
+
+  category Category         @relation(fields: [categoryId], references: [id])
+  variants ProductVariant[]
+}
+
+model ProductVariant {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  name      String
+  createdAt DateTime @default(now())
+  image     String?
+
+  product   Product               @relation(fields: [productId], references: [id])
+  prices    ProductVariantPrice[]
+  OrderLine OrderLine[]
+}
+
+model ProductVariantPrice {
+  id               Int     @id @default(autoincrement())
+  shopId           Int
+  productVariantId Int
+  price            Decimal @db.Decimal(10, 2)
+
+  shop           Shop           @relation(fields: [shopId], references: [id])
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  @@unique([shopId, productVariantId])
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  customerId  Int
+  shopId      Int
+  totalAmount Decimal     @db.Decimal(10, 2)
+  status      OrderStatus @default(pending)
+  createdAt   DateTime    @default(now())
+
+  customer User        @relation(fields: [customerId], references: [id])
+  shop     Shop        @relation(fields: [shopId], references: [id])
+  lines    OrderLine[]
+}
+
+model OrderLine {
+  id               Int     @id @default(autoincrement())
+  orderId          Int
+  name             String
+  productVariantId Int
+  quantity         Int
+  lineTotal        Decimal @db.Decimal(10, 2)
+
+  order          Order          @relation(fields: [orderId], references: [id])
+  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+}
+
+enum Role {
+  admin
+  customer
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  delivered
+  cancelled
+}
