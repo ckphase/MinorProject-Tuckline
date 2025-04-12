@@ -5,11 +5,14 @@ import { createRoot } from 'react-dom/client';
 
 import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
+import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <NuqsAdapter>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </NuqsAdapter>
   </StrictMode>
 );
