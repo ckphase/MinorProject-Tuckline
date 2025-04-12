@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from './components/protected-route';
+
+import { AdminRootLayout } from './components/layout/admin/root-layout';
+import { AdminDashboard } from './components/pages/admin/dashboard';
+
+import { ShopRootLayout } from './components/layout/shop/root-layout';
+import { ShopHome } from './components/pages/shop/home';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route
+        path='/register'
+        element={<div>Register page</div>}
+      />
+      <Route
+        path='/login'
+        element={<div>Login page</div>}
+      />
+
+      {/* Admin Portal */}
+      <Route
+        path='/admin'
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminRootLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          index
+          element={<AdminDashboard />}
+        />
+        <Route
+          path='orders'
+          element={<div>Admin Orders</div>}
+        />
+        <Route
+          path='products'
+          element={<div>Product Management</div>}
+        />
+      </Route>
+
+      {/* Customer Portal */}
+      <Route
+        path='/'
+        element={
+          <ProtectedRoute allowedRoles={['customer']}>
+            <ShopRootLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          index
+          element={<ShopHome />}
+        />
+        <Route
+          path='orders'
+          element={<div>Customer Orders</div>}
+        />
+        <Route
+          path='profile'
+          element={<div>Customer Profile</div>}
+        />
+      </Route>
+
+      {/* Fallback */}
+      <Route
+        path='*'
+        element={<div>404 Not Found</div>}
+      />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
