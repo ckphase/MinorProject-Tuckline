@@ -1,0 +1,74 @@
+import { Route, Routes } from 'react-router-dom';
+import { RegisterPage } from '@/components/pages/common/register';
+import { ProtectedRoute } from '@/components/protected-route';
+
+import { AdminRootLayout } from '@/components/layout/admin/root-layout';
+import { AdminDashboard } from '@/components/pages/admin/dashboard';
+
+import { ShopRootLayout } from '@/components/layout/shop/root-layout';
+import { ShopHome } from '@/components/pages/shop/home';
+
+function App() {
+  return (
+    <Routes>
+      <Route
+        path='/register'
+        element={<RegisterPage />}
+      />
+      <Route
+        path='/login'
+        element={<div>Login page</div>}
+      />
+
+      {/* Admin Portal */}
+      <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+        <Route
+          path='/admin'
+          element={<AdminRootLayout />}
+        >
+          <Route
+            index
+            element={<AdminDashboard />}
+          />
+          <Route
+            path='orders'
+            element={<div>Admin Orders</div>}
+          />
+          <Route
+            path='products'
+            element={<div>Product Management</div>}
+          />
+        </Route>
+      </Route>
+
+      {/* Customer Portal */}
+      <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
+        <Route
+          path='/'
+          element={<ShopRootLayout />}
+        >
+          <Route
+            index
+            element={<ShopHome />}
+          />
+          <Route
+            path='orders'
+            element={<div>Customer Orders</div>}
+          />
+          <Route
+            path='profile'
+            element={<div>Customer Profile</div>}
+          />
+        </Route>
+      </Route>
+
+      {/* Fallback */}
+      <Route
+        path='*'
+        element={<div>404 Not Found</div>}
+      />
+    </Routes>
+  );
+}
+
+export default App;
