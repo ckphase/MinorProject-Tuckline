@@ -1,4 +1,5 @@
 import { Filter } from '@/components/filter';
+import { ProductCard } from '@/components/product-card';
 import { SearchInput } from '@/components/search-input';
 import { IndianRupee, TagIcon } from 'lucide-react';
 
@@ -46,6 +47,18 @@ export const ShopHome = () => {
             }))}
           />
         </div>
+      </div>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto px-4'>
+        {Array.from({ length: 10 }, (_, i) => (
+          <ProductCard
+            key={i}
+            name='Product Name'
+            description='Product Description'
+            image='./notebook-placeholder.jpg'
+            category='snacks'
+            price={{ min: 10, max: 100 }}
+          />
+        ))}
       </div>
     </div>
   );
