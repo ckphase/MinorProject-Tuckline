@@ -27,7 +27,7 @@ export const ShopHome = () => {
           </div>
         </div>
       </div>
-      <div className='container py-8 flex gap-4 justify-between flex-col md:flex-row'>
+      <div className='container sticky top-[69px] bg-white py-8 flex gap-4 justify-between flex-col md:flex-row'>
         <SearchInput placeholder='Search by name...' />
         <div className='flex gap-4'>
           <CategoryFilter />
