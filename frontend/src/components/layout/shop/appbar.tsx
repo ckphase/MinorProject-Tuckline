@@ -1,4 +1,4 @@
-import { buttonVariants } from '@/components/ui/button';
+import { UserNav } from '@/components/user-nav';
 import { Link } from 'react-router-dom';
 
 // TODO: chandan
@@ -13,20 +13,7 @@ export const Appbar = () => {
         >
           Tuckline
         </Link>
-        <div className='space-x-2'>
-          <Link
-            to='/login'
-            className={buttonVariants()}
-          >
-            Login
-          </Link>
-          <Link
-            to='/register'
-            className={buttonVariants({ variant: 'secondary' })}
-          >
-            Register
-          </Link>
-        </div>
+        <UserNav />
       </div>
     </header>
   );

@@ -45,10 +45,8 @@ export const LoginPage = () => {
 
   const handleSubmit = async (values: FormValues) => {
     mutate(values, {
-      onSuccess: (data) => {
-        if (data.status === 201) {
-          navigate('/');
-        }
+      onSuccess: () => {
+        navigate('/');
       },
     });
   };

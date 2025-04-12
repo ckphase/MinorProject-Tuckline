@@ -9,7 +9,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import App from './App.tsx';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      retry: false,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

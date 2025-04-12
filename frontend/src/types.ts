@@ -17,3 +17,5 @@ export type LoginResponse = {
   message: string;
   user: User;
 };
+
+export type MeResponse = User;
