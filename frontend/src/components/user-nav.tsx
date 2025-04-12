@@ -7,14 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
 import { axios } from '@/lib/axios';
 import { MeResponse } from '@/types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ComponentProps } from 'react';
 
 export const UserNav = () => {
   const { data, isLoading } = useQuery({
@@ -66,21 +66,43 @@ export const UserNav = () => {
           <DropdownMenuItem>
             <User />
             <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings />
             <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut />
-          <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        <DropdownMenuItem
+          asChild
+          className='w-full justify-start'
+        >
+          <LogoutButton />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+};
+
+const LogoutButton = (props: ComponentProps<'button'>) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => axios.post('/auth/logout').then(() => {}),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
+      navigate('/login');
+    },
+  });
+
+  return (
+    <Button
+      {...props}
+      variant='ghost'
+      onClick={() => mutate()}
+    >
+      {isPending ? <Loader2 className='animate-spin' /> : <LogOut />}
+      <span>Log out</span>
+    </Button>
   );
 };

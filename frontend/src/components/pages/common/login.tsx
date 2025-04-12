@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { axios } from '@/lib/axios';
 import { LoginResponse } from '@/types';
+import { queryKeys } from '@/lib/query-keys';
 
 const FormSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -27,6 +28,7 @@ type FormValues = z.infer<typeof FormSchema>;
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -46,6 +48,7 @@ export const LoginPage = () => {
   const handleSubmit = async (values: FormValues) => {
     mutate(values, {
       onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
         if (data.data.user.role === 'admin') {
           navigate('/admin');
         } else {

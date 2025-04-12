@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
@@ -25,6 +25,7 @@ import {
 
 import { axios } from '@/lib/axios';
 import { RegisterResponse } from '@/types';
+import { queryKeys } from '@/lib/query-keys';
 
 const FormSchema = z.object({
   name: z.string(),
@@ -36,6 +37,7 @@ const FormSchema = z.object({
 type FormValues = z.infer<typeof FormSchema>;
 
 export const RegisterPage = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
@@ -54,6 +56,7 @@ export const RegisterPage = () => {
   const handleSubmit = async (values: FormValues) => {
     mutate(values, {
       onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
         if (data.data.user.role === 'admin') {
           navigate('/admin');
         } else {
