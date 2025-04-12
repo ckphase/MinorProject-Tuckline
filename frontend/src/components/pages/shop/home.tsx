@@ -1,5 +1,5 @@
 import { Filter } from '@/components/filter';
-import { ProductCard } from '@/components/product-card';
+import { ProductList } from '@/components/product-list';
 import { SearchInput } from '@/components/search-input';
 import { axios } from '@/lib/axios';
 import { queryKeys } from '@/lib/query-keys';
@@ -11,7 +11,7 @@ const priceFilterOptions = ['asc', 'desc'];
 
 export const ShopHome = () => {
   return (
-    <div>
+    <>
       <div className='relative text-white'>
         <img
           src='./background-two.jpg'
@@ -19,7 +19,7 @@ export const ShopHome = () => {
           className='absolute -z-10 inset-0 object-cover object-top-left w-full h-full '
         />
         <div className='bg-gradient-to-b from-gray-900/50 to-gray-900/80'>
-          <div className='container  mx-auto px-4 py-16'>
+          <div className='container mx-auto px-4 py-16'>
             <h1 className='text-4xl font-bold mb-4'>Tuckline Services</h1>
             <p className='text-emerald-200 text-lg'>
               Find and compare products across all LPU tuck shops in one place
@@ -42,19 +42,8 @@ export const ShopHome = () => {
           />
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto px-4'>
-        {Array.from({ length: 10 }, (_, i) => (
-          <ProductCard
-            key={i}
-            name='Product Name'
-            description='Product Description'
-            image='./notebook-placeholder.jpg'
-            category='snacks'
-            price={{ min: 10, max: 100 }}
-          />
-        ))}
-      </div>
-    </div>
+      <ProductList />
+    </>
   );
 };
 
@@ -64,7 +53,7 @@ const CategoryFilter = () => {
     queryFn: () =>
       axios
         .get<Categories>('/shop/categories')
-        .then((res) => res.data.categories),
+        .then((res) => res.data.categories ?? []),
   });
 
   return (
@@ -73,12 +62,13 @@ const CategoryFilter = () => {
       label='All Categories'
       filterKey='category'
       disabled={isLoading}
-      options={(data ? ['all categories', ...data] : ['all categories']).map(
-        (category) => ({
-          label: category,
-          value: category,
-        })
-      )}
+      options={(data
+        ? [{ id: '0', name: 'all categories' }, ...data]
+        : [{ id: '0', name: 'All Categories' }]
+      ).map((category) => ({
+        label: category.name,
+        value: category.id,
+      }))}
     />
   );
 };

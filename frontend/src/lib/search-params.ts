@@ -1,10 +1,15 @@
-import { parseAsString } from 'nuqs/server';
+import { createSerializer, parseAsString } from 'nuqs/server';
 
 export const searchQueryParser = {
   q: parseAsString.withDefault(''),
 };
 
 export const filterQueryParser = {
-  category: parseAsString.withDefault(''),
-  price: parseAsString.withDefault(''),
+  category: parseAsString.withDefault('0'),
+  price: parseAsString.withDefault('0'),
 };
+
+export const serialize = createSerializer({
+  ...searchQueryParser,
+  ...filterQueryParser,
+});

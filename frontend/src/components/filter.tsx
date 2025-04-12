@@ -21,8 +21,6 @@ type FilterProps = ComponentProps<typeof Select> & {
   }>;
 };
 
-// TODO: add clear filter option
-
 export const Filter = ({
   icon,
   label,
@@ -33,6 +31,8 @@ export const Filter = ({
   const [isPending, startTransition] = useTransition();
   const [, setFilterQuery] = useQueryStates(filterQueryParser, {
     startTransition,
+    shallow: false,
+    clearOnDefault: true,
   });
 
   return (

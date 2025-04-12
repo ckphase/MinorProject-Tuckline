@@ -1,4 +1,7 @@
-export type Category = string;
+export type Category = {
+  id: string;
+  name: string;
+};
 export type Categories = { categories: Category[] };
 
 export type User = {
@@ -19,3 +22,31 @@ export type LoginResponse = {
 };
 
 export type MeResponse = User;
+
+type Shop = {
+  id: number;
+  name: string;
+};
+
+type PriceEntry = {
+  shop: Shop;
+  price: string;
+};
+
+type ProductVariant = {
+  id: number;
+  productId: number;
+  product: {
+    category: {
+      name: string;
+    };
+  };
+  name: string;
+  createdAt: string;
+  image: string | null;
+  prices: PriceEntry[];
+};
+
+export type ProductListResponse = {
+  products: ProductVariant[];
+};

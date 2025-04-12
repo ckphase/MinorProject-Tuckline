@@ -19,7 +19,8 @@ export const SearchInput = ({
   const [isPending, startTransition] = useTransition();
   const [{ q }, setSearchQuery] = useQueryStates(searchQueryParser, {
     startTransition,
-    throttleMs: 500,
+    shallow: false,
+    throttleMs: 1000,
   });
 
   const Icon = isPending ? Loader2 : SearchIcon;
