@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { RegisterPage } from './components/pages/common/register';
 import { ProtectedRoute } from './components/protected-route';
 
 import { AdminRootLayout } from './components/layout/admin/root-layout';
@@ -12,7 +13,7 @@ function App() {
     <Routes>
       <Route
         path='/register'
-        element={<div>Register page</div>}
+        element={<RegisterPage />}
       />
       <Route
         path='/login'
