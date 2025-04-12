@@ -1,9 +1,15 @@
 import { useProductPreviewStore } from '@/lib/store/product-preview-store';
-import { Dialog, DialogContent, DialogFooter, DialogHeader } from './ui/dialog';
-import { Button } from './ui/button';
-import { DialogDescription } from '@radix-ui/react-dialog';
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { Button } from './ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+} from './ui/dialog';
+import { useOrderStore } from '@/lib/store/order-store';
 
 type CartItem = {
   id: number;
@@ -14,6 +20,7 @@ type CartItem = {
 
 export const ProductPreviewDialog = () => {
   const { data, clearData } = useProductPreviewStore();
+  const { addItem } = useOrderStore();
   const [selected, setSelected] = useState<CartItem | null>();
 
   return (
@@ -54,7 +61,23 @@ export const ProductPreviewDialog = () => {
           ))}
         </DialogDescription>
         <DialogFooter>
-          <Button>Add to Cart</Button>
+          <Button
+            onClick={() => {
+              if (selected) {
+                addItem({
+                  id: selected.id,
+                  name: data?.name || '',
+                  price: selected.price,
+                  image: data?.image || '',
+                  quantity: 1,
+                  shopId: selected.shopId,
+                });
+              }
+              clearData();
+            }}
+          >
+            Add to Cart
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

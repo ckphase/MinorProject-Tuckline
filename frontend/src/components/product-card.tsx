@@ -50,6 +50,8 @@ export const ProductCard = ({
             onClick={() => {
               setData({
                 id,
+                name,
+                image: image || '',
                 prices,
               });
             }}

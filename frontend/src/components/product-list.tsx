@@ -8,9 +8,11 @@ import { useSearchParams } from 'react-router-dom';
 import { ProductCard } from './product-card';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ProductPreviewDialog } from './product-preview-dialog';
+import { useProductPreviewStore } from '@/lib/store/product-preview-store';
 
 export const ProductList = () => {
   const [searchParams] = useSearchParams();
+  const { data: previewData } = useProductPreviewStore();
   const q = searchParams.get('q') || '';
   const category = searchParams.get('category') || '';
 
@@ -41,7 +43,11 @@ export const ProductList = () => {
             image={product.image || './notebook-placeholder.jpg'}
           />
         ))}
-        <ProductPreviewDialog />
+        {/**
+         * TODO: find a way to reset the selected field when the dialog is closed
+         *       currently, it is not resetting the selected field when the dialog is closed
+         **/}
+        <ProductPreviewDialog key={previewData?.id} />
       </Dialog>
     </div>
   ) : (

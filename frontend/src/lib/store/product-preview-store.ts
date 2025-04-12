@@ -3,6 +3,8 @@ import { create } from 'zustand';
 
 type ProductPreview = {
   id: number;
+  name?: string;
+  image?: string;
   prices: PriceEntry[];
 };
 

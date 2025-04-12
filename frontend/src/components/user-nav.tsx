@@ -1,4 +1,12 @@
+import { axios } from '@/lib/axios';
+import { queryKeys } from '@/lib/query-keys';
+import { useOrderStore } from '@/lib/store/order-store';
+import { MeResponse } from '@/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader2, LogOut, Settings, User } from 'lucide-react';
+import { ComponentProps } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Cart } from './cart';
 import { Button, buttonVariants } from './ui/button';
 import {
   DropdownMenu,
@@ -9,12 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/query-keys';
-import { axios } from '@/lib/axios';
-import { MeResponse } from '@/types';
-import { Link, useNavigate } from 'react-router-dom';
-import { ComponentProps } from 'react';
 
 export const UserNav = () => {
   const { data, isLoading } = useQuery({
@@ -46,51 +48,57 @@ export const UserNav = () => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='outline'
-          size='icon'
-          className='rounded-full'
+    <div className='flex items-center gap-4'>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant='outline'
+            size='icon'
+            className='rounded-full'
+          >
+            AU
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className='w-56'
+          align='end'
         >
-          AU
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className='w-56'
-        align='end'
-      >
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User />
-            <span>Profile</span>
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <User />
+              <span>Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Settings />
+              <span>Settings</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            asChild
+            className='w-full justify-start'
+          >
+            <LogoutButton />
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings />
-            <span>Settings</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          asChild
-          className='w-full justify-start'
-        >
-          <LogoutButton />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Cart />
+    </div>
   );
 };
 
 const LogoutButton = (props: ComponentProps<'button'>) => {
   const navigate = useNavigate();
+  const { clearCart } = useOrderStore();
+
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: () => axios.post('/auth/logout').then(() => {}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
+      clearCart();
       navigate('/login');
     },
   });
