@@ -53,8 +53,12 @@ export const RegisterPage = () => {
 
   const handleSubmit = async (values: FormValues) => {
     mutate(values, {
-      onSuccess: () => {
-        navigate('/');
+      onSuccess: (data) => {
+        if (data.data.user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       },
     });
   };
