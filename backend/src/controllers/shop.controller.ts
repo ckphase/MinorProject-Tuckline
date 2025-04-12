@@ -28,6 +28,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
           category: {
             select: { name: true },
           },
+          description: true,
         },
       },
       prices: {
