@@ -5,13 +5,13 @@ import dotenv from 'dotenv';
 import { authRoutes } from './routes/auth.routes';
 import { shopRoutes } from './routes/shop.routes';
 import { adminRoutes } from './routes/admin.routes';
+import { requireAuth } from './middleware/auth';
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-
 app.use(
   session({
     secret: process.env.SECRET_KEY || 'default_secret',
@@ -28,5 +28,9 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/shop', shopRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.get('/api/me', requireAuth, (req, res) => {
+  res.json({ user: req.user });
+});
 
 export { app };
