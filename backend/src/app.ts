@@ -7,6 +7,7 @@ import { authRoutes } from './routes/auth.routes';
 import { shopRoutes } from './routes/shop.routes';
 import { adminRoutes } from './routes/admin.routes';
 import { requireAuth } from './middleware/auth';
+import { orderRoutes } from './routes/orders.routes';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/shop', shopRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/order', requireAuth, orderRoutes);
 
 app.get('/api/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
