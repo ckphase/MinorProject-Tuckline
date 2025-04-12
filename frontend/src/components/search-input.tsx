@@ -19,12 +19,13 @@ export const SearchInput = ({
   const [isPending, startTransition] = useTransition();
   const [{ q }, setSearchQuery] = useQueryStates(searchQueryParser, {
     startTransition,
+    throttleMs: 500,
   });
 
   const Icon = isPending ? Loader2 : SearchIcon;
 
   return (
-    <div className={cn('relative w-[480px]', className)}>
+    <div className={cn('relative max-w-md w-full', className)}>
       <Icon
         className={cn(
           'text-muted-foreground absolute top-1/2 left-2 size-4 -translate-y-1/2',

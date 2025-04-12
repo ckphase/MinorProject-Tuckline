@@ -1,4 +1,10 @@
+import { Filter } from '@/components/filter';
 import { SearchInput } from '@/components/search-input';
+import { IndianRupee, TagIcon } from 'lucide-react';
+
+const categoryFilterOptions = ['all', 'snacks', 'stationery', 'others'];
+
+const priceFilterOptions = ['asc', 'desc'];
 
 export const ShopHome = () => {
   return (
@@ -18,8 +24,28 @@ export const ShopHome = () => {
           </div>
         </div>
       </div>
-      <div className='container py-8'>
+      <div className='container py-8 flex gap-4 justify-between flex-col md:flex-row'>
         <SearchInput placeholder='Search by name...' />
+        <div className='flex gap-4'>
+          <Filter
+            icon={<TagIcon className='size-4' />}
+            label='All Categories'
+            filterKey='category'
+            options={categoryFilterOptions.map((category) => ({
+              label: category,
+              value: category,
+            }))}
+          />
+          <Filter
+            icon={<IndianRupee className='size-4' />}
+            label='Price'
+            filterKey='price'
+            options={priceFilterOptions.map((order) => ({
+              label: order,
+              value: order,
+            }))}
+          />
+        </div>
       </div>
     </div>
   );
