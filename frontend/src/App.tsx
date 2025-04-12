@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { LoginPage } from '@/components/pages/common/login';
 import { RegisterPage } from '@/components/pages/common/register';
 import { ProtectedRoute } from '@/components/protected-route';
 
@@ -17,7 +18,7 @@ function App() {
       />
       <Route
         path='/login'
-        element={<div>Login page</div>}
+        element={<LoginPage />}
       />
 
       {/* Admin Portal */}

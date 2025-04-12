@@ -1,22 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from '@/components/ui/select';
 
-export const RegisterPage = () => {
+export const LoginPage = () => {
   // @ts-expect-error will add types later
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
-      name: e.target.name.value,
       email: e.target.email.value,
       password: e.target.password.value,
-      role: e.target.role.value,
     };
 
     console.log(formData);
@@ -28,13 +20,6 @@ export const RegisterPage = () => {
         className='max-w-sm w-full flex flex-col gap-4'
         onSubmit={handleSubmit}
       >
-        <Label>Full Name</Label>
-        <Input
-          name='name'
-          placeholder='Full Name'
-          required
-        />
-
         <Label>Email</Label>
         <Input
           name='email'
@@ -51,15 +36,7 @@ export const RegisterPage = () => {
           required
         />
 
-        <Label>Role</Label>
-        <Select name='role'>
-          <SelectTrigger className='w-full'>Select Role</SelectTrigger>
-          <SelectContent>
-            <SelectItem value='customer'>Customer</SelectItem>
-            <SelectItem value='admin'>admin</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button type='submit'>Register</Button>
+        <Button type='submit'>Login</Button>
       </form>
     </div>
   );

@@ -4,9 +4,9 @@ import { Appbar } from './appbar';
 import { Footer } from './footer';
 
 export const ShopRootLayout = () => (
-  <div>
+  <>
     <Appbar />
     <Outlet />
     <Footer />
-  </div>
+  </>
 );
