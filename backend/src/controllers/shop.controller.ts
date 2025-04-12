@@ -13,7 +13,15 @@ export const getAllCategories = async (req: Request, res: Response) => {
 };
 
 export const getAllProducts = async (req: Request, res: Response) => {
+  const { q, category } = req.query;
+
   const products = await prisma.productVariant.findMany({
+    where: {
+      product: {
+        name: q ? { contains: String(q) } : undefined,
+        categoryId: category ? Number(category) : undefined,
+      },
+    },
     include: {
       product: {
         select: {
