@@ -27,7 +27,12 @@ export const register = async (req: Request, res: Response) => {
     req.session.userId = user.id;
     res.status(201).json({
       message: 'User registered',
-      user: { id: user.id, email: user.email, role: user.role },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (err) {
     res.status(400).json({
@@ -55,7 +60,12 @@ export const login = async (req: Request, res: Response) => {
   req.session.userId = user.id;
   res.json({
     message: 'Logged in',
-    user: { id: user.id, email: user.email, role: user.role },
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
   });
 };
 
