@@ -23,23 +23,24 @@ export type LoginResponse = {
 
 export type MeResponse = User;
 
-type Shop = {
+export type Shop = {
   id: number;
   name: string;
 };
 
-type PriceEntry = {
+export type PriceEntry = {
   shop: Shop;
   price: string;
 };
 
-type ProductVariant = {
+export type ProductVariant = {
   id: number;
   productId: number;
   product: {
     category: {
       name: string;
     };
+    description: string;
   };
   name: string;
   createdAt: string;
