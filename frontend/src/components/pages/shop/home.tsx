@@ -1,9 +1,11 @@
 import { Filter } from '@/components/filter';
 import { ProductCard } from '@/components/product-card';
 import { SearchInput } from '@/components/search-input';
+import { axios } from '@/lib/axios';
+import { queryKeys } from '@/lib/query-keys';
+import { Categories } from '@/types';
+import { useQuery } from '@tanstack/react-query';
 import { IndianRupee, TagIcon } from 'lucide-react';
-
-const categoryFilterOptions = ['all', 'snacks', 'stationery', 'others'];
 
 const priceFilterOptions = ['asc', 'desc'];
 
@@ -28,15 +30,7 @@ export const ShopHome = () => {
       <div className='container py-8 flex gap-4 justify-between flex-col md:flex-row'>
         <SearchInput placeholder='Search by name...' />
         <div className='flex gap-4'>
-          <Filter
-            icon={<TagIcon className='size-4' />}
-            label='All Categories'
-            filterKey='category'
-            options={categoryFilterOptions.map((category) => ({
-              label: category,
-              value: category,
-            }))}
-          />
+          <CategoryFilter />
           <Filter
             icon={<IndianRupee className='size-4' />}
             label='Price'
@@ -61,5 +55,30 @@ export const ShopHome = () => {
         ))}
       </div>
     </div>
+  );
+};
+
+const CategoryFilter = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: [queryKeys.categories],
+    queryFn: () =>
+      axios
+        .get<Categories>('/shop/categories')
+        .then((res) => res.data.categories),
+  });
+
+  return (
+    <Filter
+      icon={<TagIcon className='size-4' />}
+      label='All Categories'
+      filterKey='category'
+      disabled={isLoading}
+      options={(data ? ['all categories', ...data] : ['all categories']).map(
+        (category) => ({
+          label: category,
+          value: category,
+        })
+      )}
+    />
   );
 };
