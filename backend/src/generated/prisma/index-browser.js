@@ -170,6 +170,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   shopId: 'shopId',
   totalAmount: 'totalAmount',
   status: 'status',
+  shippingAddress: 'shippingAddress',
+  paymentMethod: 'paymentMethod',
   createdAt: 'createdAt'
 };
 
@@ -216,6 +218,11 @@ exports.Prisma.ProductOrderByRelevanceFieldEnum = {
 exports.Prisma.ProductVariantOrderByRelevanceFieldEnum = {
   name: 'name',
   image: 'image'
+};
+
+exports.Prisma.OrderOrderByRelevanceFieldEnum = {
+  shippingAddress: 'shippingAddress',
+  paymentMethod: 'paymentMethod'
 };
 
 exports.Prisma.OrderLineOrderByRelevanceFieldEnum = {

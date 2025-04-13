@@ -83,12 +83,14 @@ model ProductVariantPrice {
 }
 
 model Order {
-  id          Int         @id @default(autoincrement())
-  customerId  Int
-  shopId      Int
-  totalAmount Decimal     @db.Decimal(10, 2)
-  status      OrderStatus @default(pending)
-  createdAt   DateTime    @default(now())
+  id              Int         @id @default(autoincrement())
+  customerId      Int
+  shopId          Int
+  totalAmount     Decimal     @db.Decimal(10, 2)
+  status          OrderStatus @default(pending)
+  shippingAddress String?
+  paymentMethod   String?
+  createdAt       DateTime    @default(now())
 
   customer User        @relation(fields: [customerId], references: [id])
   shop     Shop        @relation(fields: [shopId], references: [id])
