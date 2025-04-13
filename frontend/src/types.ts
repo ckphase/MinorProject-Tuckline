@@ -60,7 +60,7 @@ export type OrderLine = {
   quantity: number;
   lineTotal: string;
   productVariant: {
-    image: string | null;
+    image?: string | null;
   };
 };
 

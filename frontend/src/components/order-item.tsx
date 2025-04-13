@@ -55,7 +55,7 @@ export const OrderItem = ({
             >
               <div className='relative h-16 w-16 overflow-hidden rounded-md bg-gray-200'>
                 <img
-                  src={line.productVariant.image || ''}
+                  src={line.productVariant?.image || ''}
                   className='object-cover'
                 />
               </div>
