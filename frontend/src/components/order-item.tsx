@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { ChevronRight, Clock, Package, Store } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
@@ -17,6 +18,8 @@ export const OrderItem = ({
   lines,
   shop,
   totalAmount,
+  shippingAddress,
+  paymentMethod,
   createdAt,
 }: OrderWithShop) => {
   return (
@@ -36,14 +39,28 @@ export const OrderItem = ({
             {status}
           </Badge>
         </div>
-        <Button
-          variant='ghost'
-          size='sm'
-          className='gap-1 text-xs sm:text-sm'
-        >
-          View Details
-          <ChevronRight className='h-4 w-4' />
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant='ghost'
+              size='sm'
+              className='gap-1 text-xs sm:text-sm'
+            >
+              View Details
+              <ChevronRight className='h-4 w-4' />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <div>
+              <h2 className='font-bold'>Shipping to:</h2>
+              <p className='text-muted-foreground'>{shippingAddress}</p>
+            </div>
+            <div>
+              <h2 className='font-bold'>Payment Method</h2>
+              <p className='text-muted-foreground'>{paymentMethod}</p>
+            </div>
+          </DialogContent>
+        </Dialog>
       </CardHeader>
 
       <CardContent>
