@@ -13,6 +13,7 @@ import { OrderResponse } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { Fragment, useRef } from 'react';
+import { toast } from 'sonner';
 
 const shippingCharge = 10;
 
@@ -31,6 +32,14 @@ export const ShopCheckoutPage = () => {
           throw new Error('Failed to create order');
         }),
   });
+
+  if (items.length === 0) {
+    return (
+      <div className='container py-8'>
+        <div className='text-center text-lg font-bold'>Your cart is empty</div>
+      </div>
+    );
+  }
 
   const placeOrder = async ({
     address,
@@ -52,9 +61,9 @@ export const ShopCheckoutPage = () => {
     };
 
     mutate(order, {
-      onSuccess: (data) => {
-        console.log(data);
-        // handle success
+      onSuccess: () => {
+        toast.success('Order placed successfully');
+        clearCart();
       },
     });
   };

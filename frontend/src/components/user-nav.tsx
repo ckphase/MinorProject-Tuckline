@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { toast } from 'sonner';
 
 export const UserNav = () => {
   const { data, isLoading } = useQuery({
@@ -98,6 +99,7 @@ const LogoutButton = (props: ComponentProps<'button'>) => {
     mutationFn: () => axios.post('/auth/logout').then(() => {}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
+      toast.success('Successfully logged out');
       clearCart();
       navigate('/login');
     },

@@ -10,6 +10,7 @@ import {
   DialogHeader,
 } from './ui/dialog';
 import { useOrderStore } from '@/lib/store/order-store';
+import { toast } from 'sonner';
 
 type CartItem = {
   id: number;
@@ -72,8 +73,11 @@ export const ProductPreviewDialog = () => {
                   quantity: 1,
                   shopId: selected.shopId,
                 });
+                toast.success('Added to cart');
+                clearData();
+              } else {
+                toast.error('Please select a shop to add to cart');
               }
-              clearData();
             }}
           >
             Add to Cart

@@ -26,6 +26,7 @@ import {
 import { axios } from '@/lib/axios';
 import { RegisterResponse } from '@/types';
 import { queryKeys } from '@/lib/query-keys';
+import { toast } from 'sonner';
 
 const FormSchema = z.object({
   name: z.string(),
@@ -57,6 +58,7 @@ export const RegisterPage = () => {
     mutate(values, {
       onSuccess: (data) => {
         queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
+        toast.success('Registration successful!');
         if (data.data.user.role === 'admin') {
           navigate('/admin');
         } else {

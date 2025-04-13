@@ -1,6 +1,7 @@
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { CartItem as CartItemProps } from '@/lib/store/order-store';
+import { toast } from 'sonner';
 
 export const CartItem = ({
   image,
@@ -32,7 +33,10 @@ export const CartItem = ({
             <Button
               variant='ghost'
               size='sm'
-              onClick={onQuantityMinus}
+              onClick={() => {
+                toast.success('Item quantity decreased');
+                onQuantityMinus();
+              }}
             >
               <Minus />
             </Button>
@@ -40,7 +44,10 @@ export const CartItem = ({
             <Button
               variant='ghost'
               size='sm'
-              onClick={onQuantityPlus}
+              onClick={() => {
+                toast.success('Item quantity increased');
+                onQuantityPlus();
+              }}
             >
               <Plus />
             </Button>
@@ -48,7 +55,10 @@ export const CartItem = ({
           <Button
             variant='ghost'
             size='icon'
-            onClick={onRemove}
+            onClick={() => {
+              toast.success('Item removed from cart');
+              onRemove();
+            }}
           >
             <Trash2 className='text-destructive' />
           </Button>
