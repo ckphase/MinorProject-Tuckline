@@ -22,4 +22,12 @@ export const orderValidator = [
   body('items.*.shopId')
     .isInt({ gt: 0 })
     .withMessage('Shop ID must be a positive integer'),
+
+  body('shippingAddress')
+    .isString()
+    .withMessage('Shipping address must be a string'),
+
+  body('paymentMethod')
+    .isString()
+    .withMessage('Payment method must be a string'),
 ];

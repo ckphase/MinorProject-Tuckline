@@ -12,6 +12,8 @@ type CartItem = {
 export const createOrder = async (req: Request, res: Response) => {
   const userId = req.user?.id;
   const items: CartItem[] = req.body.items;
+  const shippingAddress = req.body.shippingAddress;
+  const paymentMethod = req.body.paymentMethod;
 
   // Group items by shopId
   const groupedByShop = items.reduce((acc, item) => {
@@ -36,6 +38,8 @@ export const createOrder = async (req: Request, res: Response) => {
           shopId,
           totalAmount,
           status: 'pending',
+          shippingAddress,
+          paymentMethod,
           lines: {
             create: shopItems.map((item) => ({
               name: item.name,
