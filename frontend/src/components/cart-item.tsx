@@ -12,16 +12,15 @@ export const CartItem = ({
   onQuantityPlus,
   onRemove,
 }: CartItemProps & {
-  onQuantityMinus: () => void;
-  onQuantityPlus: () => void;
-  onRemove: () => void;
+  onQuantityMinus?: () => void;
+  onQuantityPlus?: () => void;
+  onRemove?: () => void;
 }) => {
   return (
     <div className='flex items-start gap-4'>
       <img
         src={image}
-        alt={name.slice(0, 5)}
-        className='w-16 h-16 shrink-0 object-cover rounded-md border border-border'
+        className='w-16 h-16 bg-gray-200 shrink-0 object-cover rounded-md border border-border'
       />
       <div className='w-full flex flex-col gap-2'>
         <div className='flex w-full justify-between'>
@@ -29,39 +28,45 @@ export const CartItem = ({
           <span>₹{(price * quantity).toFixed(2)}</span>
         </div>
         <div className='flex w-full justify-between'>
-          <div className='flex items-center border border-border rounded-full'>
+          {onQuantityMinus && onQuantityPlus ? (
+            <div className='flex items-center border border-border rounded-full'>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => {
+                  toast.success('Item quantity decreased');
+                  onQuantityMinus?.();
+                }}
+              >
+                <Minus />
+              </Button>
+              <span className='text-sm'>{quantity}</span>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => {
+                  toast.success('Item quantity increased');
+                  onQuantityPlus?.();
+                }}
+              >
+                <Plus />
+              </Button>
+            </div>
+          ) : (
+            <p className='text-muted-foreground'>x{quantity}</p>
+          )}
+          {onRemove ? (
             <Button
               variant='ghost'
-              size='sm'
+              size='icon'
               onClick={() => {
-                toast.success('Item quantity decreased');
-                onQuantityMinus();
+                toast.success('Item removed from cart');
+                onRemove();
               }}
             >
-              <Minus />
+              <Trash2 className='text-destructive' />
             </Button>
-            <span className='text-sm'>{quantity}</span>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => {
-                toast.success('Item quantity increased');
-                onQuantityPlus();
-              }}
-            >
-              <Plus />
-            </Button>
-          </div>
-          <Button
-            variant='ghost'
-            size='icon'
-            onClick={() => {
-              toast.success('Item removed from cart');
-              onRemove();
-            }}
-          >
-            <Trash2 className='text-destructive' />
-          </Button>
+          ) : null}
         </div>
       </div>
     </div>

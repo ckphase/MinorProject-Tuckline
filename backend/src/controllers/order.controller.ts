@@ -77,8 +77,11 @@ export const getOrders = async (req: Request, res: Response) => {
         lines: true,
         shop: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
-    res.status(200).json(orders);
+    res.status(200).json({ orders });
     return;
   }
 
@@ -92,7 +95,10 @@ export const getOrders = async (req: Request, res: Response) => {
       lines: true,
       shop: true,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
-  res.status(200).json(orders);
+  res.status(200).json({ orders });
 };

@@ -21,7 +21,7 @@ export type LoginResponse = {
   user: User;
 };
 
-export type MeResponse = User;
+export type MeResponse = { user: User };
 
 export type Shop = {
   id: number;
@@ -73,7 +73,22 @@ export type Order = {
   lines: OrderLine[];
 };
 
+export type OrderWithShop = Order & {
+  shop: {
+    id: number;
+    name: string;
+    description: string;
+    ownerId: number;
+    location: string;
+    createdAt: string;
+  };
+};
+
 export type OrderResponse = {
   message: string;
   orders: Order[];
+};
+
+export type OrderHistoryResponse = {
+  orders: OrderWithShop[];
 };

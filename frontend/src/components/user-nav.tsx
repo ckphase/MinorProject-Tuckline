@@ -3,7 +3,7 @@ import { queryKeys } from '@/lib/query-keys';
 import { useOrderStore } from '@/lib/store/order-store';
 import { MeResponse } from '@/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Loader2, LogOut, Settings, User } from 'lucide-react';
+import { Loader2, LogOut, Settings, ShoppingCart, User } from 'lucide-react';
 import { ComponentProps } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Cart } from './cart';
@@ -48,6 +48,12 @@ export const UserNav = () => {
     );
   }
 
+  const initials = data.user.name
+    ?.split(' ')
+    .map((name) => name[0])
+    .join('')
+    .toUpperCase();
+
   return (
     <div className='flex items-center gap-4'>
       <DropdownMenu>
@@ -57,7 +63,7 @@ export const UserNav = () => {
             size='icon'
             className='rounded-full'
           >
-            AU
+            {initials}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -67,15 +73,25 @@ export const UserNav = () => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem disabled>
               <User />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem disabled>
               <Settings />
               <span>Settings</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link
+              to='/orders'
+              className='flex w-full items-center justify-start'
+            >
+              <ShoppingCart />
+              <span>Orders</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             asChild

@@ -9,6 +9,7 @@ import { AdminDashboard } from '@/components/pages/admin/dashboard';
 import { ShopRootLayout } from '@/components/layout/shop/root-layout';
 import { ShopHome } from '@/components/pages/shop/home';
 import { ShopCheckoutPage } from './components/pages/shop/checkout';
+import { ShopOrderHistoryPage } from './components/pages/shop/orders';
 
 function App() {
   return (
@@ -59,7 +60,7 @@ function App() {
           />
           <Route
             path='orders'
-            element={<div>Customer Orders</div>}
+            element={<ShopOrderHistoryPage />}
           />
           <Route
             path='profile'
