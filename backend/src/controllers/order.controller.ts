@@ -63,6 +63,48 @@ export const createOrder = async (req: Request, res: Response) => {
     .json({ message: 'Orders created successfully', orders: createdOrders });
 };
 
+export const updateOrder = async (req: Request, res: Response) => {
+  const orderId = req.body.id;
+  const status = req.body.status;
+
+  const isAdmin = req.user?.role === 'admin';
+  if (!isAdmin) {
+    res.status(403).json({ message: 'Forbidden' });
+    return;
+  }
+
+  // Check if the order exists
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+      shop: {
+        ownerId: req.user?.id,
+      },
+    },
+    include: {
+      lines: true,
+      shop: true,
+    },
+  });
+  if (!order) {
+    res.status(404).json({ message: 'Order not found' });
+    return;
+  }
+
+  const updatedOrder = await prisma.order.update({
+    where: {
+      id: orderId,
+    },
+    data: {
+      status,
+    },
+  });
+  res.status(200).json({
+    message: 'Order status updated successfully',
+    order: updatedOrder,
+  });
+};
+
 export const getOrders = async (req: Request, res: Response) => {
   // if user is admin then get all orders owned by the admin (shop owner)
   const isAdmin = req.user?.role === 'admin';

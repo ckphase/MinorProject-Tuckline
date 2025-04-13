@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const orderValidator = [
+export const createOrderValidator = [
   body('items')
     .isArray({ min: 1 })
     .withMessage('Cart must be a non-empty array of items'),
@@ -30,4 +30,15 @@ export const orderValidator = [
   body('paymentMethod')
     .isString()
     .withMessage('Payment method must be a string'),
+];
+
+export const updateOrderValidator = [
+  body('id')
+    .isInt({ gt: 0 })
+    .withMessage('Order ID must be a positive integer'),
+  body('status')
+    .isIn(['pending', 'confirmed', 'delivered', 'cancelled'])
+    .withMessage(
+      'Status must be one of the following: pending, confirmed, delivered, cancelled'
+    ),
 ];
