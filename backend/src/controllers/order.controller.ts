@@ -81,10 +81,7 @@ export const updateOrder = async (req: Request, res: Response) => {
         ownerId: req.user?.id,
       },
     },
-    include: {
-      lines: true,
-      shop: true,
-    },
+    select: { id: true },
   });
   if (!order) {
     res.status(404).json({ message: 'Order not found' });
@@ -116,6 +113,13 @@ export const getOrders = async (req: Request, res: Response) => {
         },
       },
       include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
         lines: {
           include: {
             productVariant: {
@@ -142,6 +146,7 @@ export const getOrders = async (req: Request, res: Response) => {
       customerId: userId,
     },
     include: {
+      customer: true,
       lines: true,
       shop: true,
     },
