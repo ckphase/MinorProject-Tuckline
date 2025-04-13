@@ -62,3 +62,37 @@ export const createOrder = async (req: Request, res: Response) => {
     .status(201)
     .json({ message: 'Orders created successfully', orders: createdOrders });
 };
+
+export const getOrders = async (req: Request, res: Response) => {
+  // if user is admin then get all orders owned by the admin (shop owner)
+  const isAdmin = req.user?.role === 'admin';
+  if (isAdmin) {
+    const orders = await prisma.order.findMany({
+      where: {
+        shop: {
+          ownerId: req.user?.id,
+        },
+      },
+      include: {
+        lines: true,
+        shop: true,
+      },
+    });
+    res.status(200).json(orders);
+    return;
+  }
+
+  // else get orders for the logged in user
+  const userId = req.user?.id;
+  const orders = await prisma.order.findMany({
+    where: {
+      customerId: userId,
+    },
+    include: {
+      lines: true,
+      shop: true,
+    },
+  });
+
+  res.status(200).json(orders);
+};
