@@ -74,7 +74,15 @@ export const getOrders = async (req: Request, res: Response) => {
         },
       },
       include: {
-        lines: true,
+        lines: {
+          include: {
+            productVariant: {
+              select: {
+                image: true,
+              },
+            },
+          },
+        },
         shop: true,
       },
       orderBy: {
