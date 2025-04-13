@@ -59,6 +59,9 @@ export type OrderLine = {
   productVariantId: number;
   quantity: number;
   lineTotal: string;
+  productVariant: {
+    image: string | null;
+  };
 };
 
 export type Order = {

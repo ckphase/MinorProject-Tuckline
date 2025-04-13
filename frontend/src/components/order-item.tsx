@@ -17,7 +17,6 @@ export const OrderItem = ({
   lines,
   shop,
   totalAmount,
-
   createdAt,
 }: OrderWithShop) => {
   return (
@@ -56,8 +55,7 @@ export const OrderItem = ({
             >
               <div className='relative h-16 w-16 overflow-hidden rounded-md bg-gray-200'>
                 <img
-                  // TODO: Return Image url from backend
-                  src=''
+                  src={line.productVariant.image || ''}
                   className='object-cover'
                 />
               </div>
