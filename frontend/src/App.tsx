@@ -10,6 +10,7 @@ import { ShopRootLayout } from '@/components/layout/shop/root-layout';
 import { ShopHome } from '@/components/pages/shop/home';
 import { ShopCheckoutPage } from './components/pages/shop/checkout';
 import { ShopOrderHistoryPage } from './components/pages/shop/orders';
+import { AdminOrdersPage } from './components/pages/admin/orders';
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
           />
           <Route
             path='orders'
-            element={<div>Admin Orders</div>}
+            element={<AdminOrdersPage />}
           />
           <Route
             path='products'

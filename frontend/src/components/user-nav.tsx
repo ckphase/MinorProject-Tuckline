@@ -86,17 +86,19 @@ export const UserNav = () => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           {isAdmin ? null : (
-            <DropdownMenuItem asChild>
-              <Link
-                to='/orders'
-                className='flex w-full items-center justify-start'
-              >
-                <ShoppingCart />
-                <span>Orders</span>
-              </Link>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem asChild>
+                <Link
+                  to='/orders'
+                  className='flex w-full items-center justify-start'
+                >
+                  <ShoppingCart />
+                  <span>Orders</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
           )}
-          <DropdownMenuSeparator />
           <DropdownMenuItem
             asChild
             className='w-full justify-start'

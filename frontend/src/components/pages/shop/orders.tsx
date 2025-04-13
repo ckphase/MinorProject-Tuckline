@@ -14,7 +14,11 @@ export const ShopOrderHistoryPage = () => {
 
   if (isLoading) {
     return (
-      <div className='py-8'>
+      <div className='container mx-auto py-8 space-y-6 max-w-3xl'>
+        <h1 className='text-2xl font-bold mb-6 flex items-center gap-2'>
+          <ShoppingBag className='h-5 w-5' />
+          Your Orders
+        </h1>
         <Loader2 className='animate-spin mx-auto' />
       </div>
     );

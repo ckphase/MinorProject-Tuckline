@@ -1,9 +1,7 @@
 import { OrderWithShop } from '@/types';
-import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
-import { ChevronRight, Clock, Package, Store } from 'lucide-react';
+import { Clock, Package, Store } from 'lucide-react';
 import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
@@ -21,7 +19,10 @@ export const OrderItem = ({
   shippingAddress,
   paymentMethod,
   createdAt,
-}: OrderWithShop) => {
+  actions,
+}: OrderWithShop & {
+  actions?: React.ReactNode;
+}) => {
   return (
     <Card>
       <CardHeader className='bg-muted/30 flex flex-row items-center justify-between'>
@@ -39,31 +40,10 @@ export const OrderItem = ({
             {status}
           </Badge>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant='ghost'
-              size='sm'
-              className='gap-1 text-xs sm:text-sm'
-            >
-              View Details
-              <ChevronRight className='h-4 w-4' />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <div>
-              <h2 className='font-bold'>Shipping to:</h2>
-              <p className='text-muted-foreground'>{shippingAddress}</p>
-            </div>
-            <div>
-              <h2 className='font-bold'>Payment Method</h2>
-              <p className='text-muted-foreground'>{paymentMethod}</p>
-            </div>
-          </DialogContent>
-        </Dialog>
+        {actions}
       </CardHeader>
 
-      <CardContent>
+      <CardContent className='space-y-8'>
         <div className='flex flex-col gap-4'>
           {lines.map((line) => (
             <div
@@ -85,6 +65,17 @@ export const OrderItem = ({
               <div className='font-medium'>₹{line.lineTotal}</div>
             </div>
           ))}
+        </div>
+
+        <div className='space-y-2 text-sm'>
+          <div>
+            <h2>Shipping to:</h2>
+            <p className='text-muted-foreground'>{shippingAddress}</p>
+          </div>
+          <div>
+            <h2>Payment Method</h2>
+            <p className='text-muted-foreground'>{paymentMethod}</p>
+          </div>
         </div>
       </CardContent>
 

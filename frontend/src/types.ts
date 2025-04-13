@@ -87,6 +87,14 @@ export type OrderWithShop = Order & {
   };
 };
 
+export type OrderWithShopAndCustomer = OrderWithShop & {
+  customer: {
+    id: number;
+    email: string;
+    name?: string;
+  };
+};
+
 export type OrderResponse = {
   message: string;
   orders: Order[];
@@ -94,4 +102,8 @@ export type OrderResponse = {
 
 export type OrderHistoryResponse = {
   orders: OrderWithShop[];
+};
+
+export type AdminOrderHistoryResponse = {
+  orders: OrderWithShopAndCustomer[];
 };
