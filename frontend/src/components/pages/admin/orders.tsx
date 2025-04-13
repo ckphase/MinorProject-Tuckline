@@ -48,10 +48,7 @@ export const AdminOrdersPage = () => {
   if (isLoading) {
     return (
       <div className='container py-8 space-y-6'>
-        <h1 className='text-2xl font-bold mb-6 flex items-center gap-2'>
-          <ShoppingBag className='h-5 w-5' />
-          Orders
-        </h1>
+        <h1 className='text-2xl font-bold mb-6'>Orders</h1>
         <Loader2 className='animate-spin mx-auto' />
       </div>
     );
@@ -59,10 +56,7 @@ export const AdminOrdersPage = () => {
 
   return (
     <div className='container py-8 space-y-6'>
-      <h1 className='text-2xl font-bold mb-6 flex items-center gap-2'>
-        <ShoppingBag className='h-5 w-5' />
-        Orders
-      </h1>
+      <h1 className='text-2xl font-bold mb-6'>Orders</h1>
 
       <div className='flex justify-end gap-4'>
         <SearchInput
