@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type CartItem = {
+export type CartItem = {
   id: number;
   name: string;
   price: number;
@@ -12,6 +12,10 @@ type CartItem = {
 
 interface OrderStore {
   items: CartItem[];
+  shippingAddress: string;
+  paymentMethod: string;
+  setShippingAddress: (address: string) => void;
+  setPaymentMethod: (method: string) => void;
   addItem: (item: CartItem) => void;
   removeItem: (variantId: number) => void;
   updateQuantity: (variantId: number, quantity: number) => void;
@@ -25,6 +29,8 @@ export const useOrderStore = create<OrderStore>()(
   persist(
     (set, get) => ({
       items: [],
+      shippingAddress: '',
+      paymentMethod: '',
 
       addItem: (item) => {
         const existing = get().items.find((i) => i.id === item.id);
@@ -66,6 +72,8 @@ export const useOrderStore = create<OrderStore>()(
         get().items.reduce((sum, item) => sum + item.price * item.quantity, 0),
 
       setCart: (items) => set({ items }),
+      setShippingAddress: (address) => set({ shippingAddress: address }),
+      setPaymentMethod: (method) => set({ paymentMethod: method }),
     }),
     {
       name: 'order-store',

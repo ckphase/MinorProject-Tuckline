@@ -51,3 +51,29 @@ export type ProductVariant = {
 export type ProductListResponse = {
   products: ProductVariant[];
 };
+
+export type OrderLine = {
+  id: number;
+  orderId: number;
+  name: string;
+  productVariantId: number;
+  quantity: number;
+  lineTotal: string;
+};
+
+export type Order = {
+  id: number;
+  customerId: number;
+  shopId: number;
+  totalAmount: string;
+  status: string;
+  shippingAddress: string;
+  paymentMethod: string;
+  createdAt: string;
+  lines: OrderLine[];
+};
+
+export type OrderResponse = {
+  message: string;
+  orders: Order[];
+};

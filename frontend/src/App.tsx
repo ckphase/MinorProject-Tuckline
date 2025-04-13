@@ -8,6 +8,7 @@ import { AdminDashboard } from '@/components/pages/admin/dashboard';
 
 import { ShopRootLayout } from '@/components/layout/shop/root-layout';
 import { ShopHome } from '@/components/pages/shop/home';
+import { ShopCheckoutPage } from './components/pages/shop/checkout';
 
 function App() {
   return (
@@ -51,6 +52,10 @@ function App() {
           <Route
             index
             element={<ShopHome />}
+          />
+          <Route
+            path='checkout'
+            element={<ShopCheckoutPage />}
           />
           <Route
             path='orders'

@@ -1,6 +1,9 @@
 import { useOrderStore } from '@/lib/store/order-store';
-import { Button } from './ui/button';
-import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
+import { Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { CartItem } from './cart-item';
+import { Button, buttonVariants } from './ui/button';
 import {
   Sheet,
   SheetContent,
@@ -9,14 +12,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from './ui/sheet';
-import { Fragment } from 'react/jsx-runtime';
 
 export const Cart = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { items, getTotal, getQuantity, removeItem, updateQuantity } =
     useOrderStore();
 
   return (
-    <Sheet>
+    <Sheet
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <SheetTrigger asChild>
         <Button
           variant='outline'
@@ -36,65 +42,45 @@ export const Cart = () => {
         <div className='px-4 space-y-4'>
           {items.map((item) => (
             <Fragment key={item.id}>
-              <div className='flex items-start gap-4'>
-                <img
-                  src={item.image}
-                  alt={item.name.slice(0, 5)}
-                  className='w-16 h-16 shrink-0 object-cover rounded-md border border-border'
-                />
-                <div className='w-full flex flex-col gap-2'>
-                  <div className='flex w-full justify-between'>
-                    <span>{item.name}</span>
-                    <span>₹{(item.price * item.quantity).toFixed(2)}</span>
-                  </div>
-                  <div className='flex w-full justify-between'>
-                    <div className='flex items-center border border-border rounded-full'>
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        onClick={() => {
-                          if (item.quantity > 1) {
-                            updateQuantity(item.id, item.quantity - 1);
-                          } else {
-                            removeItem(item.id);
-                          }
-                        }}
-                      >
-                        <Minus />
-                      </Button>
-                      <span className='text-sm'>{item.quantity}</span>
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        onClick={() => {
-                          updateQuantity(item.id, item.quantity + 1);
-                        }}
-                      >
-                        <Plus />
-                      </Button>
-                    </div>
-                    <Button
-                      variant='ghost'
-                      size='icon'
-                      onClick={() => {
-                        removeItem(item.id);
-                      }}
-                    >
-                      <Trash2 className='text-destructive' />
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              <CartItem
+                id={item.id}
+                name={item.name}
+                image={item.image}
+                price={item.price}
+                quantity={item.quantity}
+                onRemove={() => removeItem(item.id)}
+                onQuantityMinus={() => {
+                  if (item.quantity > 1) {
+                    updateQuantity(item.id, item.quantity - 1);
+                  } else {
+                    removeItem(item.id);
+                  }
+                }}
+                onQuantityPlus={() => {
+                  updateQuantity(item.id, item.quantity + 1);
+                }}
+                shopId={item.shopId}
+              />
               <div className='border border-t border-border last:border-none' />
             </Fragment>
           ))}
         </div>
         <SheetFooter className='border-t border-border'>
+          <div className='flex w-full justify-between items-center text-muted-foreground'>
+            <span>Shipping</span>
+            <span>calculated at checkout</span>
+          </div>
           <div className='flex justify-between items-center font-bold text-xl'>
             <span>Total</span>
             <span>₹{getTotal().toFixed(2)}</span>
           </div>
-          <Button>Checkout</Button>
+          <Link
+            to='/checkout'
+            className={buttonVariants()}
+            onClick={() => setIsOpen(false)}
+          >
+            Checkout
+          </Link>
         </SheetFooter>
       </SheetContent>
     </Sheet>
