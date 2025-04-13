@@ -54,6 +54,8 @@ export const UserNav = () => {
     .join('')
     .toUpperCase();
 
+  const isAdmin = data.user.role === 'admin';
+
   return (
     <div className='flex items-center gap-4'>
       <DropdownMenu>
@@ -83,15 +85,17 @@ export const UserNav = () => {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link
-              to='/orders'
-              className='flex w-full items-center justify-start'
-            >
-              <ShoppingCart />
-              <span>Orders</span>
-            </Link>
-          </DropdownMenuItem>
+          {isAdmin ? null : (
+            <DropdownMenuItem asChild>
+              <Link
+                to='/orders'
+                className='flex w-full items-center justify-start'
+              >
+                <ShoppingCart />
+                <span>Orders</span>
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             asChild
@@ -101,7 +105,7 @@ export const UserNav = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Cart />
+      {isAdmin ? null : <Cart />}
     </div>
   );
 };
