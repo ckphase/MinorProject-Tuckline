@@ -64,7 +64,7 @@ export const createOrder = async (req: Request, res: Response) => {
 };
 
 export const updateOrder = async (req: Request, res: Response) => {
-  const orderId = req.body.id;
+  const orderId = parseInt(req.params.id);
   const status = req.body.status;
 
   const isAdmin = req.user?.role === 'admin';

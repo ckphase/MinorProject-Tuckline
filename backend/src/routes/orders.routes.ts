@@ -14,6 +14,6 @@ const router = Router();
 
 router.get('/', getOrders);
 router.post('/create', validate(createOrderValidator), createOrder);
-router.post('/update', validate(updateOrderValidator), updateOrder);
+router.patch('/:id', validate(updateOrderValidator), updateOrder);
 
 export { router as orderRoutes };

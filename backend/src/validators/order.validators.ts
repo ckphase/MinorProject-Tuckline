@@ -33,9 +33,6 @@ export const createOrderValidator = [
 ];
 
 export const updateOrderValidator = [
-  body('id')
-    .isInt({ gt: 0 })
-    .withMessage('Order ID must be a positive integer'),
   body('status')
     .isIn(['pending', 'confirmed', 'delivered', 'cancelled'])
     .withMessage(
