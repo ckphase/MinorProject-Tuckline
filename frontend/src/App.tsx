@@ -12,6 +12,7 @@ import { ShopCheckoutPage } from './components/pages/shop/checkout';
 import { ShopOrderHistoryPage } from './components/pages/shop/orders';
 import { AdminOrdersPage } from './components/pages/admin/orders';
 import { AdminCustomersPage } from './components/pages/admin/customers';
+import { AdminProductsPage } from './components/pages/admin/products';
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
           />
           <Route
             path='products'
-            element={<div>Product Management</div>}
+            element={<AdminProductsPage />}
           />
             <Route
             path='customers'
