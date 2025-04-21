@@ -11,6 +11,7 @@ import { ShopHome } from '@/components/pages/shop/home';
 import { ShopCheckoutPage } from './components/pages/shop/checkout';
 import { ShopOrderHistoryPage } from './components/pages/shop/orders';
 import { AdminOrdersPage } from './components/pages/admin/orders';
+import { AdminCustomersPage } from './components/pages/admin/customers';
 
 function App() {
   return (
@@ -41,6 +42,10 @@ function App() {
           <Route
             path='products'
             element={<div>Product Management</div>}
+          />
+            <Route
+            path='customers'
+            element={<AdminCustomersPage/>}
           />
         </Route>
       </Route>

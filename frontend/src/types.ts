@@ -87,7 +87,7 @@ export type OrderWithShop = Order & {
   };
 };
 
-export type OrderWithShopAndCustomer = OrderWithShop & {
+export type localstorage = OrderWithShop & {
   customer: {
     id: number;
     email: string;
@@ -105,5 +105,5 @@ export type OrderHistoryResponse = {
 };
 
 export type AdminOrderHistoryResponse = {
-  orders: OrderWithShopAndCustomer[];
+  orders: localstorage[];
 };

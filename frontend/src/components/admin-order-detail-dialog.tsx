@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/select';
 import { axios } from '@/lib/axios';
 import { queryKeys } from '@/lib/query-keys';
-import { OrderHistoryResponse, OrderWithShopAndCustomer } from '@/types';
+import { OrderHistoryResponse, localstorage } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Edit, Loader2 } from 'lucide-react';
@@ -53,7 +53,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export const OrderDetailDialog = (order: OrderWithShopAndCustomer) => {
+export const OrderDetailDialog = (order: localstorage) => {
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),

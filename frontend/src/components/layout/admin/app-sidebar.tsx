@@ -32,7 +32,7 @@ const navigationLinks = [
     label: 'Customers',
     href: '/admin/customers',
     icon: Users,
-    disabled: true,
+    disabled: false,
   },
 ];
 
