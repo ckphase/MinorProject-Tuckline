@@ -13,7 +13,7 @@ import { axios } from '@/lib/axios';
 import { queryKeys } from '@/lib/query-keys';
 import { AdminOrderHistoryResponse } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2, ShoppingBag } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import { useMemo } from 'react';
 

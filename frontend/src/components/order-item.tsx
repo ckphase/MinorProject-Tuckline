@@ -45,26 +45,30 @@ export const OrderItem = ({
 
       <CardContent className='space-y-8'>
         <div className='flex flex-col gap-4'>
-          {lines.map((line) => (
-            <div
-              key={line.id}
-              className='flex items-center gap-3'
-            >
-              <div className='relative h-16 w-16 overflow-hidden rounded-md bg-gray-200'>
-                <img
-                  src={line.productVariant?.image || ''}
-                  className='object-cover'
-                />
+          {lines.map((line) => {
+            console.log('line', line);
+
+            return (
+              <div
+                key={line.id}
+                className='flex items-center gap-3'
+              >
+                <div className='relative h-16 w-16 overflow-hidden rounded-md bg-gray-200'>
+                  <img
+                    src={line.productVariant?.image || ''}
+                    className='object-cover'
+                  />
+                </div>
+                <div className='flex-1 space-y-1'>
+                  <h4 className='font-medium'>{line.name}</h4>
+                  <p className='text-sm text-muted-foreground'>
+                    x{line.quantity}
+                  </p>
+                </div>
+                <div className='font-medium'>₹{line.lineTotal}</div>
               </div>
-              <div className='flex-1 space-y-1'>
-                <h4 className='font-medium'>{line.name}</h4>
-                <p className='text-sm text-muted-foreground'>
-                  x{line.quantity}
-                </p>
-              </div>
-              <div className='font-medium'>₹{line.lineTotal}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className='space-y-2 text-sm'>
