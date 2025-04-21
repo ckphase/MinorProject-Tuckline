@@ -68,6 +68,7 @@ async function main() {
     {
       name: 'Notebook',
       categoryId: stationary.id,
+      // image: ,
       variants: [
         'Notebook (100 pages)',
         'Notebook (200 pages)',

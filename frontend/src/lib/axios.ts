@@ -1,8 +1,8 @@
 import axiosClient from 'axios';
 
 const axios = axiosClient.create({
-  // baseURL: 'http://13.216.24.239/tuckline/api',
-  baseURL: 'http://localhost:3001/api',
+  baseURL: 'http://13.216.24.239/tuckline/api',
+  //baseURL: 'http://localhost:3001/api',
   withCredentials: true,
 });
 
