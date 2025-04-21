@@ -20,7 +20,7 @@ const navigationLinks = [
     label: 'Products',
     href: '/admin/products',
     icon: Layers,
-    disabled: true,
+    disabled: false,
   },
   {
     label: 'Orders',
