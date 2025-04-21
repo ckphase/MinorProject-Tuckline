@@ -3,4 +3,5 @@ export const queryKeys = {
   products: 'products',
   orders: 'orders',
   me: 'me',
+  adminProducts: 'admin-products',
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { SearchInput } from '@/components/search-input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -12,36 +12,50 @@ import {
 } from '@/components/ui/table';
 import { axios } from '@/lib/axios';
 import { queryKeys } from '@/lib/query-keys';
-import { ProductListResponse } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import { useMemo } from 'react';
-// import { ProductDetailDialog } from '@/components/admin-product-detail-dialog';
 
-const stockColors = {
-  in_stock: 'bg-green-100 text-green-800 hover:bg-green-200',
-  out_of_stock: 'bg-red-100 text-red-800 hover:bg-red-200',
-  low_stock: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
+type ProductVariant = {
+  id: number;
+  productId: number;
+  name: string;
+  createdAt: string;
+  image: string;
+  prices: Price[];
+};
+
+type Price = {
+  id: number;
+  price: string;
+};
+
+type ProductVariantsResponse = {
+  productVariants: ProductVariant[];
 };
 
 export const AdminProductsPage = () => {
   const { data, isLoading } = useQuery({
-    queryKey: [queryKeys.products],
+    queryKey: [queryKeys.adminProducts],
     queryFn: () =>
-      axios.get<ProductListResponse>('/product').then((res) => res.data),
+      axios
+        .get<ProductVariantsResponse>('/admin/products')
+        .then((res) => res.data),
   });
+
+  console.log({ data });
 
   const [q] = useQueryState('q');
   const filteredData = useMemo(() => {
     if (!data) return [];
-    return data.products.filter((product) => {
+    return data.productVariants.filter((product) => {
       if (!q) return true;
       const searchString = q.toLowerCase();
       return (
         String(product.id).toLowerCase().includes(searchString) ||
         product.name.toLowerCase().includes(searchString) ||
-        product.sku?.toLowerCase().includes(searchString)
+        product.productId.toString().toLowerCase().includes(searchString)
       );
     });
   }, [data, q]);
@@ -62,7 +76,7 @@ export const AdminProductsPage = () => {
       <div className='flex justify-end gap-4'>
         <SearchInput
           className='md:max-w-md'
-          placeholder='Search by id, name, SKU...'
+          placeholder='Search by id, name...'
         />
       </div>
 
@@ -73,7 +87,7 @@ export const AdminProductsPage = () => {
             <TableHead>Name</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Stock</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Created At</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -81,23 +95,36 @@ export const AdminProductsPage = () => {
           {filteredData.map((product) => (
             <TableRow key={product.id}>
               <TableCell>{product.id}</TableCell>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>₹{product.price.toFixed(2)}</TableCell>
-              <TableCell>{product.stock}</TableCell>
-              <TableCell>
-                <Badge
-                  variant='outline'
-                  className={`${
-                    stockColors[product.stockStatus as keyof typeof stockColors]
-                  } px-2 py-0.5 capitalize text-xs font-medium`}
-                >
-                  {product.stockStatus}
-                </Badge>
+              <TableCell className='flex items-center gap-2'>
+                <img
+                  src={product.image}
+                  className='size-10 rounded-md'
+                />
+                <span className='text-sm'>{product.name}</span>
               </TableCell>
               <TableCell>
-                {/* Replace with your ProductDetailDialog or edit/view button */}
-                {/* <ProductDetailDialog {...product} /> */}
-                <span className='text-sm text-muted-foreground'>Coming soon</span>
+                ₹{parseFloat(product.prices[0].price).toFixed(2)}
+              </TableCell>
+              <TableCell>
+                <span className='text-sm text-green-400'>In Stock</span>
+              </TableCell>
+              <TableCell>
+                {new Date(product.createdAt).toLocaleString('en-IN', {
+                  year: '2-digit',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: true,
+                })}
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                >
+                  <Trash2 className='text-destructive/60 hover:cursor-pointer hover:text-destructive size-4' />
+                </Button>
               </TableCell>
             </TableRow>
           ))}

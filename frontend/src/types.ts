@@ -105,6 +105,6 @@ export type OrderHistoryResponse = {
 };
 
 export type AdminOrderHistoryResponse = {
-  products: any;
+  products: unknown;
   orders: localstorage[];
 };
