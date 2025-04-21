@@ -102,6 +102,23 @@ export const updateOrder = async (req: Request, res: Response) => {
   });
 };
 
+export const getTotalOrdersCount = async (req: Request, res: Response) => {
+  const isAdmin = req.user?.role === 'admin';
+  if (isAdmin) {
+    const totalOrdersCount = await prisma.order.count({
+      where: {
+        shop: {
+          ownerId: req.user?.id,
+        },
+      },
+    });
+    res.status(200).json({ totalOrdersCount });
+    return;
+  }
+
+  res.status(403).json({ message: 'Forbidden' });
+};
+
 export const getOrders = async (req: Request, res: Response) => {
   // if user is admin then get all orders owned by the admin (shop owner)
   const isAdmin = req.user?.role === 'admin';
