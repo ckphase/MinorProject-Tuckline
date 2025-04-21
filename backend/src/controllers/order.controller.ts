@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../config/db';
+import { OrderStatus } from '../generated/prisma';
 
 type CartItem = {
   id: number; // product variant ID
@@ -63,6 +64,39 @@ export const createOrder = async (req: Request, res: Response) => {
     .json({ message: 'Orders created successfully', orders: createdOrders });
 };
 
+// for customers
+export const cancleOrder = async (req: Request, res: Response) => {
+  const orderId = parseInt(req.params.id);
+  const userId = req.user?.id;
+
+  // Check if the order exists and belongs to the user
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+      customerId: userId,
+    },
+    select: { id: true },
+  });
+  if (!order) {
+    res.status(404).json({ message: 'Order not found' });
+    return;
+  }
+
+  const updatedOrder = await prisma.order.update({
+    where: {
+      id: orderId,
+    },
+    data: {
+      status: OrderStatus.cancelled,
+    },
+  });
+  res.status(200).json({
+    message: 'Order canceled successfully',
+    order: updatedOrder,
+  });
+};
+
+// for admin (shop owners) only
 export const updateOrder = async (req: Request, res: Response) => {
   const orderId = parseInt(req.params.id);
   const status = req.body.status;
@@ -164,7 +198,15 @@ export const getOrders = async (req: Request, res: Response) => {
     },
     include: {
       customer: true,
-      lines: true,
+      lines: {
+        include: {
+          productVariant: {
+            select: {
+              image: true,
+            },
+          },
+        },
+      },
       shop: true,
     },
     orderBy: {

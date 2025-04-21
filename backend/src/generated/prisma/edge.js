@@ -233,7 +233,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\HP\\MinorProject-Tuckline\\backend\\src\\generated\\prisma",
+      "value": "/home/isxwor/Documents/class/tuckline/backend/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -242,7 +242,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       },
       {
@@ -255,11 +255,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\HP\\MinorProject-Tuckline\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/isxwor/Documents/class/tuckline/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.6.0",
