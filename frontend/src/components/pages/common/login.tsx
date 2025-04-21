@@ -19,6 +19,7 @@ import { axios } from '@/lib/axios';
 import { LoginResponse } from '@/types';
 import { queryKeys } from '@/lib/query-keys';
 
+// Define form schema with Zod for validation
 const FormSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().nonempty('Password is required'),
@@ -35,11 +36,18 @@ export const LoginPage = () => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (values: FormValues) =>
-      axios.post<LoginResponse>('/auth/login', values),
+    mutationFn: async (values: FormValues) => {
+      try {
+        const response = await axios.post<LoginResponse>('/auth/login', values);
+        console.log('API Response:', response); // Check response structure
+        return response;
+      } catch (error) {
+        console.error('Error during login:', error);
+        throw error;
+      }
+    },
     onError: (error) => {
       form.setError('root', {
-        // @ts-expect-error add types later
         message: error.response?.data.error,
       });
     },
@@ -48,7 +56,18 @@ export const LoginPage = () => {
   const handleSubmit = async (values: FormValues) => {
     mutate(values, {
       onSuccess: (data) => {
+        // Log the response for debugging
+        console.log('Login successful:', data);
+
+        // Ensure localStorage is set before navigation
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(data.data.user));
+          localStorage.setItem('authToken', data.data.token);
+        }
+
         queryClient.invalidateQueries({ queryKey: [queryKeys.me] });
+
+        // Navigate based on user role
         if (data.data.user.role === 'admin') {
           navigate('/admin');
         } else {
@@ -61,55 +80,50 @@ export const LoginPage = () => {
   const errorMessage = form.formState.errors.root?.message;
 
   return (
-    <div className='container flex items-center justify-center h-screen'>
+    <div className="container flex items-center justify-center h-screen">
       <Form {...form}>
         <form
-          className='max-w-sm w-full flex flex-col gap-4'
+          className="max-w-sm w-full flex flex-col gap-4"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
+          {/* Email Field */}
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
-              <FormItem className='flex flex-col items-start'>
-                <FormLabel className='text-left'>Email</FormLabel>
-                <FormControl className='w-full'>
-                  <Input
-                    placeholder='example@mail.com'
-                    {...field}
-                  />
+              <FormItem className="flex flex-col items-start">
+                <FormLabel className="text-left">Email</FormLabel>
+                <FormControl className="w-full">
+                  <Input placeholder="example@mail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
+          {/* Password Field */}
           <FormField
             control={form.control}
-            name='password'
+            name="password"
             render={({ field }) => (
-              <FormItem className='flex flex-col items-start'>
-                <FormLabel className='text-left'>Password</FormLabel>
-                <FormControl className='w-full'>
-                  <Input
-                    type='password'
-                    {...field}
-                  />
+              <FormItem className="flex flex-col items-start">
+                <FormLabel className="text-left">Password</FormLabel>
+                <FormControl className="w-full">
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
+          {/* Display Error Message */}
           {errorMessage && (
-            <p className='text-destructive text-sm'>{errorMessage}</p>
+            <p className="text-destructive text-sm">{errorMessage}</p>
           )}
 
-          <Button
-            type='submit'
-            disabled={isPending}
-          >
-            {isPending && <Loader2 className='animate-spin' />}
+          {/* Submit Button */}
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="animate-spin" />}
             Login
           </Button>
         </form>

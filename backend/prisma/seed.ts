@@ -38,6 +38,15 @@ async function main() {
     },
   });
 
+  await prisma.user.create({
+    data: {
+      name: 'Chandanpreet Kaur',
+      email: 'worldchampion202428@mail.com',
+      password: hashedpassword,
+      role: 'customer',
+    },
+  });
+
   // Shops
   const shop1 = await prisma.shop.create({
     data: {
@@ -68,7 +77,7 @@ async function main() {
     {
       name: 'Notebook',
       categoryId: stationary.id,
-      // image: ,
+       image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Ballpoint_pen.jpg/320px-Ballpoint_pen.jpg',
       variants: [
         'Notebook (100 pages)',
         'Notebook (200 pages)',

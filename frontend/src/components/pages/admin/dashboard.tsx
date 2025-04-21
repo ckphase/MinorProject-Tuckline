@@ -13,7 +13,7 @@ export const AdminDashboard = () => {
   const orders = data?.orders || [];
 
   const totalOrders = orders.length;
-  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+  const totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.totalAmount), 0);
   const uniqueUsers = new Set(orders.map((order) => order.customer.email)).size;
 
   const orderStatusCounts = orders.reduce(
