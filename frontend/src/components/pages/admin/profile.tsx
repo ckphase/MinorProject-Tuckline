@@ -1,58 +1,70 @@
-import { User } from 'lucide-react';
+import { axios } from '@/lib/axios';
+import { queryKeys } from '@/lib/query-keys';
+import { MeResponse } from '@/types';
+import { useQuery } from '@tanstack/react-query';
+import { Users, Mail, Badge } from 'lucide-react';
 
 export const ProfilePage = () => {
-  // Example user data (you can fetch it later if you want!)
-  const user = {
-    name: 'Ariana Blossom', // cute name ✨
-    email: 'ariana.blossom@example.com',
-    phone: '+91 9876543210',
-    address: 'Seoul, South Korea 🌸',
-    role: 'Artist & Developer',
-    bio: 'Dreamer, Dancer, and Creator of Magic. 🎨✨',
-    avatarUrl: 'https://i.pravatar.cc/150?img=47', // just a sample avatar!
-  };
+  const { data, isLoading } = useQuery({
+    queryKey: [queryKeys.me],
+    queryFn: () => axios.get<MeResponse>('/me').then((res) => res.data),
+  });
+
+  const user = data?.user;
+
+  if (isLoading) {
+    return (
+      <div className='p-6 space-y-10'>
+        <h1 className='text-3xl font-semibold text-gray-800 animate-pulse'>📊 Loading Profile...</h1>
+      </div>
+    );
+  }
 
   return (
-    <div className='p-8 space-y-8 bg-gradient-to-br from-pink-50 to-indigo-100 min-h-screen'>
-      <h1 className='text-4xl font-bold text-center text-indigo-600'>🌸 Profile</h1>
+    <div className='p-6 space-y-10 bg-blue-50 rounded-xl'>
+      <h1 className='text-3xl font-semibold text-gray-800'>🌸 Profile Page</h1>
 
-      <div className='max-w-4xl mx-auto'>
-        <div className='rounded-3xl bg-white shadow-lg p-8 flex flex-col items-center space-y-6 transition-all hover:shadow-2xl hover:scale-[1.02]'>
-          {/* Avatar */}
-          <img
-            src={user.avatarUrl}
-            alt='User Avatar'
-            className='w-32 h-32 rounded-full border-4 border-pink-300 shadow-md'
-          />
-
-          {/* Name and Bio */}
-          <div className='text-center'>
-            <h2 className='text-2xl font-semibold text-gray-800'>{user.name}</h2>
-            <p className='text-pink-500 mt-2'>{user.role}</p>
-            <p className='text-gray-500 text-sm mt-1'>{user.bio}</p>
+      {/* Profile Info Section */}
+      <section className='bg-white p-6 rounded-xl shadow-lg flex space-x-6'>
+        <div className='flex flex-col items-center'>
+          <div className='w-24 h-24 bg-blue-200 rounded-full flex items-center justify-center'>
+            <span className='text-xl text-white'>{user?.name?.charAt(0)}</span>
           </div>
-
-          {/* Info Section */}
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full mt-6'>
-            <ProfileDetail label='📧 Email' value={user.email} />
-            <ProfileDetail label='📱 Phone' value={user.phone} />
-            <ProfileDetail label='🏠 Address' value={user.address} />
-            <ProfileDetail label='💼 Role' value={user.role} />
-          </div>
-
-          {/* Cute Button */}
-          <button className='mt-6 px-6 py-3 bg-pink-400 text-white rounded-full hover:bg-pink-500 shadow-md transition'>
-            Edit Profile
-          </button>
+          <h2 className='text-xl font-semibold text-blue-700 mt-4'>{user?.name}</h2>
         </div>
-      </div>
+        <div className='flex flex-col space-y-4'>
+          <ProfileInfoItem label='Email' value={user?.email} icon={<Mail />} />
+          <ProfileInfoItem label='Role' value={user?.role} icon={<Badge />} />
+        </div>
+      </section>
+
+      {/* Customer or Shopkeeper Role Section */}
+      <section className='bg-white p-6 rounded-xl shadow-lg'>
+        <h2 className='text-xl font-semibold text-gray-800'>Role Information</h2>
+        <p className='text-gray-600 mt-2'>
+          {user?.role === 'shopkeeper'
+            ? 'You are a Shopkeeper. Manage your shop and orders from your dashboard.'
+            : 'You are a Customer. Explore and shop your favorite items!'}
+        </p>
+      </section>
     </div>
   );
 };
 
-const ProfileDetail = ({ label, value }: { label: string; value: string }) => (
-  <div className='rounded-xl border border-gray-200 p-4 bg-pink-50 hover:bg-pink-100 transition'>
-    <h3 className='text-sm font-medium text-gray-600'>{label}</h3>
-    <p className='text-lg font-semibold text-gray-800 mt-1'>{value}</p>
+const ProfileInfoItem = ({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+}) => (
+  <div className='flex items-center space-x-3'>
+    <div className='text-blue-600'>{icon}</div>
+    <div>
+      <h3 className='text-sm text-gray-500'>{label}</h3>
+      <p className='text-lg font-semibold text-gray-800'>{value}</p>
+    </div>
   </div>
 );

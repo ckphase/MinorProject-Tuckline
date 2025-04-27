@@ -13,6 +13,7 @@ import { ShopOrderHistoryPage } from './components/pages/shop/orders';
 import { AdminOrdersPage } from './components/pages/admin/orders';
 import { AdminCustomersPage } from './components/pages/admin/customers';
 import { AdminProductsPage } from './components/pages/admin/products';
+import { ProfilePage } from './components/pages/admin/profile';
 
 function App() {
   return (
@@ -49,8 +50,8 @@ function App() {
             element={<AdminCustomersPage/>}
           />
           <Route
-            path='customers'
-            element={<AdminCustomersPage/>}
+            path='profile'
+            element={<ProfilePage/>}
           />
         </Route>
       </Route>
@@ -75,7 +76,7 @@ function App() {
           />
           <Route
             path='profile'
-            element={<div>Customer Profile</div>}
+            element={<ProfilePage />}
           />
         </Route>
       </Route>
