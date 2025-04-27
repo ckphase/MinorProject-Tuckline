@@ -37,7 +37,7 @@ export const createOrder = async (req: Request, res: Response) => {
         data: {
           customerId: userId,
           shopId,
-          totalAmount: totalAmount + 10, // Assuming a flat shipping charge of 10
+          totalAmount: totalAmount + 1, // Assuming a flat platform fee of 1
           status: 'pending',
           shippingAddress,
           paymentMethod,
