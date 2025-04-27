@@ -37,7 +37,7 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div className='container p-6 space-y-10 bg-gradient-to-r from-blue-100 via-indigo-200 to-purple-300 rounded-xl shadow-xl'>
+    <div className='container mt-6 p-6 space-y-10 bg-gradient-to-r from-blue-100 via-indigo-200 to-purple-300 rounded-xl shadow-xl'>
       <h1 className='text-4xl font-semibold text-gray-800 text-center mb-8'>
         🌸 Profile Page
       </h1>

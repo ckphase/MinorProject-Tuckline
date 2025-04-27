@@ -26,10 +26,6 @@ function App() {
         path='/login'
         element={<LoginPage />}
       />
-      <Route
-        path='profile'
-        element={<ProfilePage />}
-      />
 
       {/* Admin Portal */}
       <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
@@ -53,6 +49,10 @@ function App() {
             path='customers'
             element={<AdminCustomersPage />}
           />
+          <Route
+            path='profile'
+            element={<ProfilePage />}
+          />
         </Route>
       </Route>
 
@@ -73,6 +73,10 @@ function App() {
           <Route
             path='orders'
             element={<ShopOrderHistoryPage />}
+          />
+          <Route
+            path='profile'
+            element={<ProfilePage />}
           />
         </Route>
       </Route>
