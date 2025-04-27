@@ -13,7 +13,7 @@ import { ShopOrderHistoryPage } from './components/pages/shop/orders';
 import { AdminOrdersPage } from './components/pages/admin/orders';
 import { AdminCustomersPage } from './components/pages/admin/customers';
 import { AdminProductsPage } from './components/pages/admin/products';
-import { ProfilePage } from './components/pages/admin/profile';
+import { ProfilePage } from './components/pages/common/profile';
 
 function App() {
   return (
