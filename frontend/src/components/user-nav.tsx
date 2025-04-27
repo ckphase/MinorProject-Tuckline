@@ -75,10 +75,13 @@ export const UserNav = () => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem disabled>
-              <User />
-              <span>Profile</span>
-            </DropdownMenuItem>
+            
+          <DropdownMenuItem asChild>
+            <Link to="/profile" className="flex w-full items-center justify-start">
+                <User />
+                <span>Profile</span>
+            </Link>
+        </DropdownMenuItem>
             <DropdownMenuItem disabled>
               <Settings />
               <span>Settings</span>

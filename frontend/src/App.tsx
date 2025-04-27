@@ -48,6 +48,10 @@ function App() {
             path='customers'
             element={<AdminCustomersPage/>}
           />
+          <Route
+            path='customers'
+            element={<AdminCustomersPage/>}
+          />
         </Route>
       </Route>
 
