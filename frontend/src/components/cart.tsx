@@ -67,8 +67,8 @@ export const Cart = () => {
         </div>
         <SheetFooter className='border-t border-border'>
           <div className='flex w-full justify-between items-center text-muted-foreground'>
-            <span>Shipping</span>
-            <span>calculated at checkout</span>
+            {/* <span>Shipping</span>
+            <span>calculated at checkout</span> */}
           </div>
           <div className='flex justify-between items-center font-bold text-xl'>
             <span>Total</span>

@@ -72,7 +72,16 @@ export const OrderItem = ({
         </div>
 
         <div className='space-y-2 text-sm'>
-          <div>
+          <div className='flex items-center justify-between'>
+            <h2>Platform fee</h2>
+            <div className='font-medium'>₹1</div>
+          </div>
+          <div className='text-md font-bold flex items-center justify-between'>
+            <h2>Total</h2>
+            <span>₹{totalAmount}</span>
+          </div>
+
+          <div className='border-t border-border pt-2'>
             <h2>Shipping to:</h2>
             <p className='text-muted-foreground'>{shippingAddress}</p>
           </div>
@@ -83,29 +92,23 @@ export const OrderItem = ({
         </div>
       </CardContent>
 
-      <CardFooter className='border-t border-border flex flex-col sm:flex-row justify-between gap-2'>
-        <div className='flex flex-col sm:flex-row gap-1 sm:gap-4 text-sm text-muted-foreground'>
-          <div className='flex items-center gap-1'>
-            <Store className='h-4 w-4' />
-            <span>{shop.name}</span>
-          </div>
-          <div className='flex items-center gap-1'>
-            <Clock className='h-4 w-4' />
-            <span>
-              {new Date(createdAt).toLocaleString('en-IN', {
-                year: '2-digit',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,
-              })}
-            </span>
-          </div>
+      <CardFooter className='border-t border-border flex flex-col sm:flex-row text-muted-foreground justify-between gap-2'>
+        <div className='flex items-center gap-1'>
+          <Store className='h-4 w-4' />
+          <span>{shop.name}</span>
         </div>
-        <div className='flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2'>
-          <span className='text-sm font-medium sm:hidden'>Total:</span>
-          <span className='text-lg font-bold'>₹{totalAmount}</span>
+        <div className='flex items-center gap-1'>
+          <Clock className='h-4 w-4' />
+          <span>
+            {new Date(createdAt).toLocaleString('en-IN', {
+              year: '2-digit',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            })}
+          </span>
         </div>
       </CardFooter>
     </Card>

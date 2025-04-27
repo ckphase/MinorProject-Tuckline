@@ -15,7 +15,7 @@ import { Loader2 } from 'lucide-react';
 import { Fragment, useRef } from 'react';
 import { toast } from 'sonner';
 
-const shippingCharge = 10;
+const platformFee = 1;
 
 export const ShopCheckoutPage = () => {
   const { items, getTotal, updateQuantity, removeItem, clearCart } =
@@ -128,12 +128,12 @@ export const ShopCheckoutPage = () => {
             <span>₹{getTotal().toFixed(2)}</span>
           </div>
           <div className='flex w-full justify-between items-center text-muted-foreground'>
-            <span>Shipping</span>
-            <span>₹{shippingCharge}</span>
+            <span>Platform Fee</span>
+            <span>₹{platformFee}</span>
           </div>
           <div className='flex w-full justify-between items-center font-bold text-xl mt-4'>
             <span>Total</span>
-            <span>₹{(getTotal() + shippingCharge).toFixed(2)}</span>
+            <span>₹{(getTotal() + platformFee).toFixed(2)}</span>
           </div>
         </CardFooter>
       </Card>
