@@ -22,7 +22,7 @@ export const Footer = () => (
               to='/shop'
               className='hover:text-white transition-colors duration-300'
             >
-              Browse Shops
+            
             </Link>
           </li>
           <li className='mb-2'>
@@ -30,7 +30,7 @@ export const Footer = () => (
               to='/cart'
               className='hover:text-white transition-colors duration-300'
             >
-              View Cart
+              
             </Link>
           </li>
           <li className='mb-2'>
@@ -46,7 +46,7 @@ export const Footer = () => (
               to='/contact'
               className='hover:text-white transition-colors duration-300'
             >
-              Contact Support
+           
             </Link>
           </li>
         </ul>
